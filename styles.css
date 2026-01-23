@@ -1,0 +1,134 @@
+/* === GLOBAL === */
+:root {
+    --bg-charcoal-blue: #06171e;
+    --bg-midnight-teal: #0B2A34;
+    --bg-deep-blue-teal: #0D3240;
+    --warm-red: #c44f48;
+    --white: #ffffff;
+    --normal:   #D8D7B8;
+    --water:    #A8C3F7;
+    --fire:     #F6B27A;
+    --electric: #FBE89A;
+    --grass:    #B9E2A1;
+    --ice:      #CFEFEA;
+    --fighting: #E08A87;
+    --poison:   #D3A6D8;
+    --ground:   #F0DBA8;
+    --flying:   #D4CAF8;
+    --psychic:  #F7AFC4;
+    --bug:      #D8E08A;
+    --rock:     #E0D4A5;
+    --ghost:    #B9A9D6;
+    --dragon:   #B7A0FD;
+    --dark:     #B8AAA0;
+    --steel:    #E1E1EE;
+    --fairy:    #EFC1D7;
+    --primary-font: 'Poppins';
+    --secondary-font: 'Inter';
+    --fallback-font: sans-serif;
+}
+
+html, body {
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    font-family:  var(--primary-font);
+    max-width: 1440px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: 16px;
+    margin: 0;
+}
+
+header, footer {
+    display: flex;
+    height: 48px;
+    padding: 24px;
+    background-color: var(--bg-midnight-teal);
+}
+
+.numbers {
+    font-family: var(--secondary-font);
+}
+
+/* === BACKGROUND AND FULL BLEED EFFECT === */
+.full-bleed-midnight-teal-background {
+  box-shadow: 0 0 0 100vmax var(--bg-midnight-teal);
+  clip-path: inset(0 -100vmax);
+}
+
+/* === HEADER === */
+header {
+    justify-content: space-between;
+    align-items: center;
+}
+
+input {
+    width: 120px;
+    height: 16px;
+}
+
+/* === MAIN === */
+main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--bg-charcoal-blue);
+    padding: 24px 0;
+}
+
+/* === POKEMON LIST === */
+.pokemon-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.pokemon-list > li {
+    display: flex;
+    list-style-type: none;
+    height: 208px;
+}
+
+.pokemon-card {
+    background-color: var(--bg-deep-blue-teal);
+    border-radius: 8px;
+}
+
+.pokemon-card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pokemon-card img {border-radius: 8px;
+   width: 160px;
+   height: auto;
+}
+
+.pokemon-card-footer {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* === FOOTER === */
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+footer a {
+    color: var(--white);
+    text-decoration: none;
+}

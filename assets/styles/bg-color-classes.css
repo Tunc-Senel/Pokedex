@@ -1,0 +1,72 @@
+/* === POKEMON-TYPE-THEME-BACKGROUND === */
+.normal-bg {
+  background-color: var(--normal);
+}
+
+.water-bg {
+  background-color: var(--water);
+}
+
+.fire-bg {
+  background-color: var(--fire);
+}
+
+.electric-bg {
+  background-color: var(--electric);
+}
+
+.grass-bg {
+  background-color: var(--grass);
+}
+
+.ice-bg {
+  background-color: var(--ice);
+}
+
+.fighting-bg {
+  background-color: var(--fighting);
+}
+
+.poison-bg {
+  background-color: var(--poison);
+}
+
+.ground-bg {
+  background-color: var(--ground);
+}
+
+.flying-bg {
+  background-color: var(--flying);
+}
+
+.psychic-bg {
+  background-color: var(--psychic);
+}
+
+.bug-bg {
+  background-color: var(--bug);
+}
+
+.rock-bg {
+  background-color: var(--rock);
+}
+
+.ghost-bg {
+  background-color: var(--ghost);
+}
+
+.dragon-bg {
+  background-color: var(--dragon);
+}
+
+.dark-bg {
+  background-color: var(--dark);
+}
+
+.steel-bg {
+  background-color: var(--steel);
+}
+
+.fairy-bg {
+  background-color: var(--fairy);
+}

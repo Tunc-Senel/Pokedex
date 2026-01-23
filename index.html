@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pokedex</title>
+
+        <!-- FAVICONS -->
+
+        <!-- AUTOREN-STYLESHEET -->
+        <link rel="stylesheet" type="text/css" href="./assets/styles/fonts.css">
+        <link rel="stylesheet" type="text/css" href="./styles.css">
+        <link rel="stylesheet" type="text/css" href="./assets/styles/bg-color-classes.css">
+
+    </head>
+
+    <body>
+        <!-- HEADER -->
+        <header class="full-bleed-midnight-teal-background">
+            <!-- LOGO & TITLE -->
+            <div class="website-logo-title">
+                <img class="website-logo" src="./assets/img/pokedex.png" alt="Pokedex">
+                <span>Pokedex</span>
+            </div>
+            <!-- SEARCH INPUT -->
+            <input type="text" value="" placeholder="Search Pokémon...">
+        </header>
+
+        <!-- MAIN -->
+        <main>
+            <!-- POKEMON LIST -->
+            <ul id="pokemon-list" class="pokemon-list">
+                <!-- dynamic content: pokemon cards with their basic details -->
+            </ul>
+        </main>    
+
+        <!-- FOOTER -->
+        <footer class="full-bleed-midnight-teal-background">
+            <!-- AUTHOR & ICON CREDIT -->
+            <span>
+                Tunc Senel
+            </span>
+           <span>
+                <a target="_blank" href="https://icons8.com/icon/ih6hQU67d27H/pokedex">
+                    Pokedex
+                </a>
+                <span>
+                    Icon von
+                </span>
+                <a target="_blank" href="https://icons8.com">
+                    Icons8
+                </a>
+            </span>
+        </footer>
+
+        <!-- AUTOREN-JAVASCRIPT -->
+        <script src="./scripts/pokemon-list.js" defer></script>
+        <script src="./scripts/template.js" defer></script>
+        <script src="./main.js" defer></script>
+
+    </body>
+</html>
