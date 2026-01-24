@@ -1,141 +1,103 @@
-/**
- * A list of Pokémon with their basic details.
- * Each Pokémon object contains:
- * - id: The unique identifier for the Pokémon.
- * - name: The name of the Pokémon.
- * - type: The primary type of the Pokémon.
- * - type2 (optional): The secondary type of the Pokémon, if applicable.
- */
-const pokemon = [
-    {
-        "id": 1,
-        "name": "bulbasaur",
-        "type": "grass",
-        "type2": "poison"
-    },
-    {
-        "id": 2,
-        "name": "ivysaur",
-        "type": "grass",
-        "type2": "poison"
-    },
-    {
-        "id": 3,
-        "name": "venusaur",
-        "type": "grass",
-        "type2": "poison"
-    },
-    {
-        "id": 4,
-        "name": "charmander",
-        "type": "fire",
-    },
-    {
-        "id": 5,
-        "name": "charmeleon",
-        "type": "fire",
-    },
-    {
-        "id": 6,
-        "name": "charizard",
-        "type": "fire",
-        "type2": "flying"
-    },
-    {
-        "id": 7,
-        "name": "squirtle",
-        "type": "water",
-    },
-    {
-        "id": 8,
-        "name": "wartortle",
-        "type": "water",
-    },
-    {
-        "id": 9,
-        "name": "blastoise",
-        "type": "water",
-    },
-    {
-        "id": 10,
-        "name": "caterpie",
-        "type": "bug",
-    },
-    {
-        "id": 11,
-        "name": "metapod",
-        "type": "bug",
-    },
-    {
-        "id": 12,
-        "name": "butterfree",
-        "type": "bug",
-        "type2": "flying"
-    },
-    {
-        "id": 16,
-        "name": "pidgey",
-        "type": "normal",
-        "type2": "flying"
-    },
-    {
-        "id": 17,
-        "name": "pidgeotto",
-        "type": "normal",
-        "type2": "flying"
-    },
-    {
-        "id": 18,
-        "name": "pidgeot",
-        "type": "normal",
-        "type2": "flying"
-    },
-    {
-        "id": 25,
-        "name": "pikachu",
-        "type": "electric",
-    },
-    {
-        "id": 54,
-        "name": "psyduck",
-        "type": "water",
-    },
-    {
-        "id": 55,
-        "name": "golduck",
-        "type": "water",
-    },
-    {
-        "id": 63,
-        "name": "abra",
-        "type": "psychic",
-    },
-    {
-        "id": 64,
-        "name": "kadabra",
-        "type": "psychic",
-    },
-    {
-        "id": 65,
-        "name": "alakazam",
-        "type": "psychic",
-    },
-    {
-        "id": 74,
-        "name": "geodude",
-        "type": "rock",
-        "type2": "ground"
-    },
-    {
-        "id": 75,
-        "name": "graveler",
-        "type": "rock",
-        "type2": "ground"
-    },
-    {
-        "id": 76,
-        "name": "golem",
-        "type": "rock",
-        "type2": "ground"
-    }
+// List of Pokémon IDs used in the application
+const pokemonIds = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,         
+    16,
+    17,
+    18,
+    25,
+    29,
+    30, 
+    31, 
+    32, 
+    33, 
+    34,
+    54,
+    55,
+    63,
+    64,
+    65,
+    74,
+    75,
+    76
+];
+
+// List of Generation 1 Pokémon IDs that have dual types
+const gen1DualTypeIds = [
+  1,
+  2,
+  3,
+  6,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  21,
+  22,
+  31,
+  34,
+  39,
+  40,
+  41,
+  42,
+  43,
+  44,
+  45,
+  46,
+  47,
+  48,
+  49,
+  62,
+  69,
+  70,
+  71,
+  72,
+  73,
+  74,
+  75,
+  76,
+  80,
+  81,
+  82,
+  83,
+  84,
+  85,
+  87,
+  91,
+  92,
+  93,
+  94,
+  95,
+  102,
+  103,
+  111,
+  112,
+  121,
+  122,
+  123,
+  124,
+  130,
+  131,
+  138,
+  139,
+  140,
+  141,
+  142,
+  144,
+  145,
+  146,
+  149
 ];

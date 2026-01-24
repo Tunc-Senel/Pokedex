@@ -96,7 +96,6 @@ main {
 .pokemon-list > li {
     display: flex;
     list-style-type: none;
-    height: 208px;
 }
 
 .pokemon-card {
@@ -107,17 +106,46 @@ main {
 .pokemon-card-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 32px;
+    padding: 0 8px;
 }
 
-.pokemon-card img {border-radius: 8px;
+.pokemon-card-img {
    width: 160px;
    height: auto;
 }
 
 .pokemon-card-footer {
+    position: relative;
+    height: 36px;
     display: flex;
     justify-content: center;
     gap: 8px;
+}
+
+.pokemon-type-img {
+    position: absolute;
+    width: 48px;
+    height: auto;
+    top: calc(-9px);
+    left: calc(50% - 24px);
+}
+
+.pokemon-type-img-1 {
+    position: absolute;
+    width: 48px;
+    height: auto;
+    top: calc(-9px);
+    left: calc(50% - 48px);
+}
+
+.pokemon-type-img-2 {
+    position: absolute;
+    width: 48px;
+    height: auto;
+    top: calc(-9px);
+    left: calc(50% - 0px);
 }
 
 /* === FOOTER === */

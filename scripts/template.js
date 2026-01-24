@@ -15,10 +15,10 @@ return  `
                 <span class="numbers">#${id}</span>
                 </div>
 
-                <img class="${type}-bg" src="./assets/img/${name}.png" alt="${name}">
+                <img class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
 
                 <div class="pokemon-card-footer">
-                <span">${type}</span>
+                <img class="pokemon-type-img" src="./assets/img/${type}.png" alt="${type}">
                 </div>
             </article>
          </li>
@@ -42,11 +42,11 @@ return  `
                 <span class="numbers">#${id}</span>
                 </div>
 
-                <img class="${type}-bg" src="./assets/img/${name}.png" alt="${name}">
+                <img class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
 
                 <div class="pokemon-card-footer">
-                <span">${type}</span>
-                <span">${type2}</span>
+                    <img class="pokemon-type-img-1" src="./assets/img/${type}.png" alt="${type}">
+                    <img class="pokemon-type-img-2" src="./assets/img/${type2}.png" alt="${type2}">
                 </div>
             </article>
          </li>
