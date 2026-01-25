@@ -1,5 +1,7 @@
 // DOM ELEMENT CONSTANTS
-const POKEMONLIST = document.getElementById('pokemon-list');
+const POKEMONLIST = document.getElementById("pokemon-list");
+const DIALOG = document.getElementById("dialog");
+const BODY = document.querySelector("body");
 
 // API CONSTANTS
 const BASE_URL  = "https://pokeapi.co/api/v2/"
@@ -108,6 +110,29 @@ function getDataFromSessionStorage() {
 
     showPokemonCards();
 }
+
+
+function openDialog() {
+    DIALOG.showModal();
+    DIALOG.classList.add("opened");
+    DIALOG.focus();
+    BODY.classList.add("no-scroll");
+}
+
+// function closeDialog() {
+//         DIALOG.close();
+//         DIALOG.classList.remove("opened");
+//         BODY.classList.remove("no-scroll");
+// };
+
+/**
+ * Closes the dialog when clicking outside of it
+ */
+DIALOG.addEventListener('click', function (event) {
+    if (event.target === DIALOG) {
+        closeDialog();
+    }
+});
 
 // Initialize the application by calling generatePokemonCards
 function init() {

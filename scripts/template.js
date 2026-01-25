@@ -15,7 +15,7 @@ return  `
                 <span class="numbers">#${id}</span>
                 </div>
 
-                <img class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
+                <img onclick="openDialog()" class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
 
                 <div class="pokemon-card-footer">
                 <img class="pokemon-type-img" src="./assets/img/${type}.png" alt="${type}">
@@ -42,7 +42,7 @@ return  `
                 <span class="numbers">#${id}</span>
                 </div>
 
-                <img class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
+                <img onclick="openDialog()" class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
 
                 <div class="pokemon-card-footer">
                     <img class="pokemon-type-img-1" src="./assets/img/${type}.png" alt="${type}">
