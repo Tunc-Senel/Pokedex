@@ -36,6 +36,7 @@ html, body {
     max-width: 1440px;
     margin: 0 auto;
     height: 100%;
+    font-size: 16px;
 }
 
 ul {
@@ -214,6 +215,7 @@ dialog.opened {
   flex-grow: 1;
   padding: 16px 0 16px;
 }
+
 .pokemon-data-headers {
   display: flex;
   justify-content: center;
@@ -236,15 +238,17 @@ dialog.opened {
   color: var(--white) !important;
 }
 
-.about-data {
+table {
+  display: flex;
   padding: 24px 0 0 24px;
 }
 
-.about-data tr {
+table tr {
   padding-bottom: 16px;
 }
 
-.about-data tr > td:first-of-type {
+table tr > td:first-of-type {
+  padding-right: 32px;
   color: rgba(255, 255, 255, 0.65);
 }
 
@@ -343,6 +347,7 @@ dialog.opened {
 .pokemon-card-img {
    width: 160px;
    height: auto;
+   cursor: pointer;
 }
 
 .pokemon-card-footer {

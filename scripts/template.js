@@ -15,7 +15,7 @@ return  `
                 <span class="numbers">#${id}</span>
                 </div>
 
-                <img onclick="openDialog()" class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
+                <img onclick="openDialog(${id})" class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
 
                 <div class="pokemon-card-footer">
                 <img class="pokemon-type-img" src="./assets/img/${type}.png" alt="${type}">
@@ -42,7 +42,7 @@ return  `
                 <span class="numbers">#${id}</span>
                 </div>
 
-                <img onclick="openDialog()" class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
+                <img onclick="openDialog(${id})" class="pokemon-card-img ${type}-bg" src="./assets/img/${name}.png" alt="${name}">
 
                 <div class="pokemon-card-footer">
                     <img class="pokemon-type-img-1" src="./assets/img/${type}.png" alt="${type}">
@@ -50,5 +50,149 @@ return  `
                 </div>
             </article>
          </li>
+        `
+}
+
+
+function templateDialogHeader(name, id, type) {
+return  `
+            <div class="close-like-section">
+                <span class="dialog-pokemon-name">
+                    ${name.toUpperCase()}
+                </span>
+                <button onclick="closeDialog()" type="button" class="close-like-btn" aria-label="Fenster schließen">
+                    <img src="./assets/img/heart.png" alt="heart-form">
+                    <img src="./assets/img/heart-filled.png" class="dNone" alt="heart-form">
+                </button>
+            </div>
+            <div class="dialog-pokemon-header-footer">
+                <span class="numbers dialog-pokemon-number">#${id}</span>
+                <img class="pokemon-card-img dialog-pokemon-img" src="./assets/img/${name}.png" alt="${name}">
+                <div class="dialog-pokemon-type-container">
+                    <span class="dialog-pokemon-type">${type}</span>
+                </div>
+            </div>
+        `
+}
+
+function templateDialogHeaderDualType(name, id, type, type2) {
+return  `
+            <div class="close-like-section">
+                <span class="dialog-pokemon-name">
+                    ${name.toUpperCase()}
+                </span>
+                <button onclick="closeDialog()" type="button" class="close-like-btn" aria-label="Fenster schließen">
+                    <img src="./assets/img/heart.png" alt="heart-form">
+                    <img src="./assets/img/heart-filled.png" class="dNone" alt="heart-form">
+                </button>
+            </div>
+            <div class="dialog-pokemon-header-footer">
+                <span class="numbers dialog-pokemon-number">#${id}</span>
+                <img class="pokemon-card-img dialog-pokemon-img" src="./assets/img/${name}.png" alt="${name}">
+                <div class="dialog-pokemon-type-container">
+                    <span class="dialog-pokemon-type">${type}</span>
+                    <span class="dialog-pokemon-type">${type2}</span>
+                </div>
+            </div>
+        `
+}
+
+function templateAboutData(species, height, weight, ability, ability2 = "") {
+return  `
+         <tr>
+            <td>Species</td>
+            <td>${species}</td>
+         </tr>
+         <tr>
+            <td>Height</td>
+            <td>${(height*10)} cm</td>
+         </tr>
+         <tr>
+            <td>Weight</td>
+            <td>${(weight/10).toFixed(1)} kg</td>
+         </tr>
+         <tr>
+            <td>Abilities</td>
+            <td>${ability}   ${ability2}</td>
+         </tr>
+        `
+}
+
+function templateBaseStatsData(hp, hpValue, attack, attackValue, defense, defenseValue, specialAttack, specialAttackValue, specialDefense, specialDefenseValue, speed, speedValue) {
+return  `
+         <tr>
+            <td>${hp}</td>
+            <td>${hpValue}</td>
+         </tr>
+         <tr>
+            <td>${attack}</td>
+            <td>${attackValue}</td>
+         </tr>
+         <tr>
+            <td>${defense}</td>
+            <td>${defenseValue}</td>
+         </tr>
+         <tr>
+            <td>${specialAttack}</td>
+            <td>${specialAttackValue}</td>
+         </tr>
+         <tr>
+            <td>${specialDefense}</td>
+            <td>${specialDefenseValue}</td>
+         </tr>
+         <tr>
+            <td>${speed}</td>
+            <td>${speedValue}</td>
+         </tr>
+        `
+}
+
+function templateGenderData(male, female) {
+return  `
+         <tr>
+            <td>Name</td>
+            <td>${male}</td>
+         </tr>
+         <tr>
+            <td>Species</td>
+            <td>${female}</td>
+         </tr>
+        `
+}
+
+function templateMovesData(move1, move2, move3, move4) {
+return  `
+         <tr>
+            <td>Move 1</td>
+            <td>${move1}</td>
+         </tr>
+         <tr>
+            <td>Move 2</td>
+            <td>${move2}</td>
+         </tr>
+         <tr>
+            <td>Move 3</td>
+            <td>${move3}</td>
+         </tr>
+         <tr>
+            <td>Move 4</td>
+            <td>${move4}</td>
+         </tr>
+        `
+}
+
+function templateDialogFooter(id) { 
+return  `
+         <button onclick="moveInDialog('previous', ${id})" class="arrow-left" aria-label="Vorheriges Bild">
+            <span class="arrow-left-up"></span>
+            <span class="arrow-middle"></span>
+            <span class="arrow-left-down"></span>
+         </button>
+
+         <button onclick="moveInDialog('next', ${id})" class="arrow-right" aria-label="Nächstes Bild">
+            <span class="arrow-right-up"></span>
+            <span class="arrow-middle"></span>
+            <span class="arrow-right-down"></span>
+         </button>
         `
 }

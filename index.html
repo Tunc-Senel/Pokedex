@@ -33,78 +33,40 @@
 
             <!-- DIALOG -->
             <dialog id="dialog">
-                <div class="dialog-content">
+                <div id="dialog-content" class="dialog-content">
                     <!-- DIALOG HEADER -->
-                    <header id="dialog-header" class="dialog-header-visible fire-bg ">
-                        <div class="close-like-section">
-                            <span class="dialog-pokemon-name">
-                                Charizard
-                            </span>
-                            <button onclick="closeDialog()" type="button" class="close-like-btn" aria-label="Fenster schließen">
-                                <img src="./assets/img/heart.png" alt="heart-form">
-                                <img src="./assets/img/heart-filled.png" class="dNone" alt="heart-form">
-                            </button>
-                        </div>
-                        <div class="dialog-pokemon-header-footer">
-                            <span class="numbers dialog-pokemon-number">#6</span>
-                            <img class="pokemon-card-img dialog-pokemon-img" src="./assets/img/charizard.png" alt="Charizard">
-                            <div class="dialog-pokemon-type-container">
-                                <span class="dialog-pokemon-type">Fire</span>
-                                <span class="dialog-pokemon-type">Flying</span>
-                            </div>
-                        </div>
+                     <header id="dialog-header" class="dialog-header-visible">
+                        
                     </header>
                     <!-- DIALOG POKEMON DATA -->
                     <section id="dialog-pokemon-data" class="dialog-pokemon-data">
                         <!-- DIALOG POKEMON DATA HEADERS -->
                         <ul class="pokemon-data-headers">
-                            <li class="active-data-header">About</li>
-                            <li>Base Stats</li>
-                            <li>Gender</li>
-                            <li>Moves</li>
+                            <li id="about-header" onclick="activateDataHeader('about')" class="active-data-header">About</li>
+                            <li id="base-stats-header" onclick="activateDataHeader('base-stats')">Base Stats</li>
+                            <li id="gender-header" onclick="activateDataHeader('gender')">Gender</li>
+                            <li id="moves-header" onclick="activateDataHeader('moves')">Moves</li>
                         </ul>
                         <!-- DIALOG POKEMON ABOUT -->
-                        <table class="about-data">
-                            <tr>
-                                <td>Species</td>
-                                <td>Charizard</td>
-                            </tr>
-                            <tr>
-                                <td>Height</td>
-                                <td>170 cm</td>
-                            </tr>
-                            <tr>
-                                <td>Weight</td>
-                                <td>90.5 kg</td>
-                            </tr>
-                            <tr>
-                                <td>Abilities</td>
-                                <td>Blaze, Solar-power</td>
-                            </tr>
+                        <table id="about-data" class="about-data">
+                            
                         </table>
                         <!-- DIALOG POKEMON BASE STATS -->
-                        <table class="base-stats-data">
+                        <table id="base-stats-data" class="base-stats-data dNone">
+                           
                         </table>
                         <!-- DIALOG POKEMON GENDER -->
-                        <table class="gender-data">
+                        <table id="gender-data" class="gender-data dNone">
+                            
                         </table>
                         <!-- DIALOG POKEMON MOVES -->
-                        <table class="moves-data">
+                        <table id="moves-data" class="moves-data dNone">
+                           
                         </table>
                     </section>
 
                     <footer id="dialog-footer" class="dialog-footer-visible">
-                        <button onclick="moveInDialog('left')" class="arrow-left" aria-label="Vorheriges Bild">
-                            <span class="arrow-left-up"></span>
-                            <span class="arrow-middle"></span>
-                            <span class="arrow-left-down"></span>
-                        </button>
-
-                        <button onclick="moveInDialog('right')" class="arrow-right" aria-label="Nächstes Bild">
-                            <span class="arrow-right-up"></span>
-                            <span class="arrow-middle"></span>
-                            <span class="arrow-right-down"></span>
-                        </button>
+                        
                     </footer>
                 </div>
             </dialog>
