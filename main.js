@@ -7,13 +7,15 @@ const DIALOGFOOTER = document.getElementById("dialog-footer")
 const BODY = document.querySelector("body");
 const ABOUTHEADER = document.getElementById("about-header");
 const BASESTATSHEADER = document.getElementById("base-stats-header");
-const GENDERHEADER = document.getElementById("gender-header");
+const EVOLUTIONHEADER = document.getElementById("evolution-header");
 const MOVESHEADER = document.getElementById("moves-header")
 const ABOUTDATA = document.getElementById("about-data")
 const BASESTATSDATA = document.getElementById("base-stats-data")
-const GENDERDATA = document.getElementById("gender-data")
+const EVOLUTIONDATA = document.getElementById("evolution-data")
 const MOVESDATA = document.getElementById("moves-data")
 const DIALOGPOKEMONDATA = document.getElementById("dialog-pokemon-data")
+const DIALOGARROWLEFTBUTTON = document.getElementById("move-back-in-dialog")
+const DIALOGARROWRIGHTBUTTON =  document.getElementById("move-forward-in-dialog")
 
 // API CONSTANTS
 const BASE_URL  = "https://pokeapi.co/api/v2/"
@@ -25,6 +27,8 @@ let PokemonData = {
  'pokemonTypes': [],
  'pokemonTypes2': [],
 }
+
+let currentDialogId = 0;
 
 /**
  * Generates and appends Pokémon cards to the Pokémon list in the DOM.
@@ -72,6 +76,10 @@ function showPokemonCards() {
 }
 
 async function openDialog(pokemonId) {
+    let base = "";
+    let stage1 = "";
+    let stage2 = "";
+    currentDialogId = pokemonId;
     DIALOG.showModal();
     DIALOG.classList.add("opened");
     DIALOG.focus();
@@ -79,57 +87,137 @@ async function openDialog(pokemonId) {
 
     let response = await fetch(`${BASE_URL}pokemon/${pokemonId}`);
     let responseToJson = await response.json();
-    DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
-    if (responseToJson.abilities.length > 1) {
-        if (responseToJson.types.length > 1) {
-            DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
-            ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
-            BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
-            GENDERDATA.insertAdjacentHTML("beforeend", templateGenderData(responseToJson.name, responseToJson.species.name));
-            MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
-            DIALOGFOOTER.insertAdjacentHTML("beforeend", templateDialogFooter(pokemonId));
-        } else {
-            DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
-            ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
-            BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
-            GENDERDATA.insertAdjacentHTML("beforeend", templateGenderData(responseToJson.name, responseToJson.species.name));
-            MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
-            DIALOGFOOTER.insertAdjacentHTML("beforeend", templateDialogFooter(pokemonId));
+    let responseEvo = await fetch(`${BASE_URL}pokemon-species/${pokemonId}`);
+    let responseEvoToJson = await responseEvo.json();
+    let responseEvoData = await fetch(responseEvoToJson.evolution_chain.url);
+    let responseEvoDataToJson = await responseEvoData.json();
     
-       }
-    } else {
-        if (responseToJson.types.length > 1) {
-            DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
-            ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
-            BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
-            GENDERDATA.insertAdjacentHTML("beforeend", templateGenderData(responseToJson.name, responseToJson.species.name));
-            MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
-            DIALOGFOOTER.insertAdjacentHTML("beforeend", templateDialogFooter(pokemonId));
+    if (gen1_twoEvolutions.includes(pokemonId)) {
+        base = responseEvoDataToJson.chain.species.name
+        stage1 = responseEvoDataToJson.chain.evolves_to[0].species.name
+        stage2 = responseEvoDataToJson.chain.evolves_to[0].evolves_to[0].species.name
+
+        DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
+        if (responseToJson.abilities.length > 1) {
+            if (responseToJson.types.length > 1) {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateTwoEvolutionsData(base, stage1, stage2, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+            } else {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateTwoEvolutionsData(base, stage1, stage2, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+        }
         } else {
-            DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
-            ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
-            BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
-            GENDERDATA.insertAdjacentHTML("beforeend", templateGenderData(responseToJson.name, responseToJson.species.name));
-            MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
-            DIALOGFOOTER.insertAdjacentHTML("beforeend", templateDialogFooter(pokemonId));
-       }
+            if (responseToJson.types.length > 1) {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateTwoEvolutionsData(base, stage1, stage2, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+            } else {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateTwoEvolutionsData(base, stage1, stage2, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+        }
+        }
+    } else if (gen1_oneEvolution.includes(pokemonId)) {
+        base = responseEvoDataToJson.chain.species.name
+        stage1 = responseEvoDataToJson.chain.evolves_to[0].species.name
+
+        DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
+        if (responseToJson.abilities.length > 1) {
+            if (responseToJson.types.length > 1) {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateOneEvolutionData(base, stage1, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+            } else {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateOneEvolutionData(base, stage1, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+        }
+        } else {
+            if (responseToJson.types.length > 1) {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateOneEvolutionData(base, stage1, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+            } else {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateOneEvolutionData(base, stage1, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+        }
+        }
+    } else {
+        base = responseEvoDataToJson.chain.species.name;
+
+        DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
+        if (responseToJson.abilities.length > 1) {
+            if (responseToJson.types.length > 1) {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateNoEvolutionData(base, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+            } else {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name, responseToJson.abilities[1].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateNoEvolutionData(base, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+        }
+        } else {
+            if (responseToJson.types.length > 1) {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeaderDualType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateNoEvolutionData(base, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+            } else {
+                DIALOGHEADER.insertAdjacentHTML("afterbegin" , templateDialogHeader(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
+                ABOUTDATA.insertAdjacentHTML("beforeend", templateAboutData(responseToJson.species.name, responseToJson.height, responseToJson.weight, responseToJson.abilities[0].ability.name));
+                BASESTATSDATA.insertAdjacentHTML("beforeend", templateBaseStatsData(responseToJson.stats[0].stat.name, responseToJson.stats[0].base_stat, responseToJson.stats[1].stat.name, responseToJson.stats[1].base_stat, responseToJson.stats[2].stat.name, responseToJson.stats[2].base_stat, responseToJson.stats[3].stat.name, responseToJson.stats[3].base_stat, responseToJson.stats[4].stat.name, responseToJson.stats[4].base_stat, responseToJson.stats[5].stat.name, responseToJson.stats[5].base_stat));
+                EVOLUTIONDATA.insertAdjacentHTML("beforeend", templateNoEvolutionData(base, responseToJson.types[0].type.name));
+                MOVESDATA.insertAdjacentHTML("beforeend", templateMovesData(responseToJson.moves[0].move.name, responseToJson.moves[1].move.name, responseToJson.moves[2].move.name, responseToJson.moves[3].move.name));
+        }
+        }
     }
+    
+
+
+    
+    PokemonData.pokemonIDs[0] === currentDialogId  ? DIALOGARROWLEFTBUTTON.disabled = true : DIALOGARROWLEFTBUTTON.disabled = false;
+    PokemonData.pokemonIDs[PokemonData.pokemonIDs.length - 1] === currentDialogId ? DIALOGARROWRIGHTBUTTON.disabled = true : DIALOGARROWRIGHTBUTTON.disabled = false;
+
 }
 
-function moveInDialog(direction, oldId) {
+function moveInDialog(direction) {
     DIALOGHEADER.className = "dialog-header-visible"
     DIALOGHEADER.innerHTML = "";
     ABOUTDATA.innerHTML = "";
     BASESTATSDATA.innerHTML = "";
-    GENDERDATA.innerHTML = "";
+    EVOLUTIONDATA.innerHTML = "";
     MOVESDATA.innerHTML = "";
-    DIALOGFOOTER.innerHTML = "";
-    let currentPokemonId = pokemonIds.findIndex((currentId => currentId === oldId))
+    let currentPokemonId = pokemonIds.findIndex((pokemonIdsID => pokemonIdsID === currentDialogId))
+    let newId = 0;
     if (direction === "next") {
-        let newId = currentPokemonId + 1
+        newId = currentPokemonId + 1
         openDialog(pokemonIds[newId]);
     } else {
-        let newId = currentPokemonId - 1
+        newId = currentPokemonId - 1
         openDialog(pokemonIds[newId]);
     }
 }
@@ -138,42 +226,42 @@ function activateDataHeader(activatedheader) {
     if (activatedheader === "about") {
         ABOUTHEADER.classList.add("active-data-header")
         BASESTATSHEADER.classList.remove("active-data-header");
-        GENDERHEADER.classList.remove("active-data-header");
+        EVOLUTIONHEADER.classList.remove("active-data-header");
         MOVESHEADER.classList.remove("active-data-header");
 
         ABOUTDATA.classList.remove("dNone")
         BASESTATSDATA.classList.add("dNone")
-        GENDERDATA.classList.add("dNone")
+        EVOLUTIONDATA.classList.add("dNone")
         MOVESDATA.classList.add("dNone")
     } else if (activatedheader === 'base-stats' ) {
         ABOUTHEADER.classList.remove("active-data-header");
         BASESTATSHEADER.classList.add("active-data-header")
-        GENDERHEADER.classList.remove("active-data-header");
+        EVOLUTIONHEADER.classList.remove("active-data-header");
         MOVESHEADER.classList.remove("active-data-header");
 
         ABOUTDATA.classList.add("dNone")
         BASESTATSDATA.classList.remove("dNone")
-        GENDERDATA.classList.add("dNone")
+        EVOLUTIONDATA.classList.add("dNone")
         MOVESDATA.classList.add("dNone")
-    } else if (activatedheader === "gender") {
-        GENDERHEADER.classList.add("active-data-header")
+    } else if (activatedheader === "evolution") {
+        EVOLUTIONHEADER.classList.add("active-data-header")
         ABOUTHEADER.classList.remove("active-data-header");
         BASESTATSHEADER.classList.remove("active-data-header");
         MOVESHEADER.classList.remove("active-data-header");
 
         ABOUTDATA.classList.add("dNone")
         BASESTATSDATA.classList.add("dNone")
-        GENDERDATA.classList.remove("dNone")
+        EVOLUTIONDATA.classList.remove("dNone")
         MOVESDATA.classList.add("dNone")
     } else {
         MOVESHEADER.classList.add("active-data-header")
-        GENDERHEADER.classList.remove("active-data-header");
+        EVOLUTIONHEADER.classList.remove("active-data-header");
         ABOUTHEADER.classList.remove("active-data-header");
         BASESTATSHEADER.classList.remove("active-data-header");
 
         ABOUTDATA.classList.add("dNone")
         BASESTATSDATA.classList.add("dNone")
-        GENDERDATA.classList.add("dNone")
+        EVOLUTIONDATA.classList.add("dNone")
         MOVESDATA.classList.remove("dNone")
     }
 
@@ -239,9 +327,8 @@ function closeDialog() {
     DIALOGHEADER.innerHTML = "";
     ABOUTDATA.innerHTML = "";
     BASESTATSDATA.innerHTML = "";
-    GENDERDATA.innerHTML = "";
+    EVOLUTIONDATA.innerHTML = "";
     MOVESDATA.innerHTML = "";
-    DIALOGFOOTER.innerHTML = "";
 };
 
 /**
@@ -256,16 +343,14 @@ DIALOG.addEventListener('click', function (event) {
 /**
  * Keyboard navigation for dialog: left/right arrow
  */
-DIALOG.addEventListener('keydown', function(event) {
-    if (!DIALOG.open) return;
-    if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        moveInDialog('left');
-    } else if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        moveInDialog('right');
-    }
-});
+// DIALOG.addEventListener('keydown', function(event) {
+//     if (!DIALOG.open) return;
+//     if (event.key === 'ArrowLeft') {
+//         moveInDialog('previous');
+//     } else if (event.key === 'ArrowRight') {
+//         moveInDialog('next');
+//     }
+// });
 
 // Initialize the application by calling generatePokemonCards
 function init() {

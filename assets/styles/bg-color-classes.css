@@ -70,3 +70,76 @@
 .fairy-bg {
   background-color: var(--fairy);
 }
+
+/* === POKEMON-TYPE-THEME-EVOLUTION === */
+.normal-evo-border {
+  border: solid 1.5px var(--normal);
+}
+
+.water-evo-border {
+  border: solid 1.5px var(--water);
+}
+
+.fire-evo-border {
+  border: solid 1.5px var(--fire);
+}
+
+.electric-evo-border {
+  border: solid 1.5px var(--electric);
+}
+
+.grass-evo-border {
+  border: solid 1.5px var(--grass);
+}
+
+.ice-evo-border {
+  border: solid 1.5px var(--ice);
+}
+
+.fighting-evo-border {
+  border: solid 1.5px var(--fighting);
+}
+
+.poison-evo-border {
+  border: solid 1.5px var(--poison);
+}
+
+.ground-evo-border {
+  border: solid 1.5px var(--ground);
+}
+
+.flying-evo-border {
+  border: solid 1.5px var(--flying);
+}
+
+.psychic-evo-border {
+  border: solid 1.5px var(--psychic);
+}
+
+.bug-evo-border {
+  border: solid 1.5px var(--bug);
+}
+
+.rock-evo-border {
+  border: solid 1.5px var(--rock);
+}
+
+.ghost-evo-border {
+  border: solid 1.5px var(--ghost);
+}
+
+.dragon-evo-border {
+  border: solid 1.5px var(--dragon);
+}
+
+.dark-evo-border {
+  border: solid 1.5px var(--dark);
+}
+
+.steel-evo-border {
+  border: solid 1.5px var(--steel);
+}
+
+.fairy-evo-border {
+  border: solid 1.5px var(--fairy);
+}

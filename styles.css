@@ -74,7 +74,7 @@ button {
 }
 
 .dNone {
-    display: none;
+    display: none !important;
 }
 
 .no-scroll {
@@ -176,7 +176,7 @@ dialog.opened {
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
 }
 
@@ -249,6 +249,35 @@ table tr {
 
 table tr > td:first-of-type {
   padding-right: 32px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+table:nth-of-type(3) {
+  display: flex;
+  padding: 24px 0 0 24px;
+}
+
+
+table:nth-of-type(3) tr > td:nth-of-type(2) {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+
+table:nth-of-type(3) img {
+  width: 80px;
+  height: auto;
+  border-radius: 50%;
+}
+
+
+table:nth-of-type(3) tr {
+  padding-bottom: 16px;
+}
+
+table:nth-of-type(3) tr > td:first-of-type {
   color: rgba(255, 255, 255, 0.65);
 }
 

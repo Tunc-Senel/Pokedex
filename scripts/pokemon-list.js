@@ -32,6 +32,29 @@ const pokemonIds = [
     76
 ];
 
+const pokemonIds2 = [
+  92,
+  93,
+  94,
+  108,
+  115,
+  122,
+  123,
+  126,
+  131,
+  137,
+  142,
+  143,
+  144,
+  145,
+  146,
+  147,
+  148,
+  149,
+  150,
+  151
+]
+
 // List of Generation 1 Pokémon IDs that have dual types
 const gen1DualTypeIds = [
   1,
@@ -99,5 +122,67 @@ const gen1DualTypeIds = [
   144,
   145,
   146,
+  149
+];
+
+// 0 Evolutionen (innerhalb der 151)
+const gen1_noEvolution = [
+  115,
+  131,
+  142,
+  144,
+  145,
+  146,
+  150,
+  151
+];
+
+// 1 Evolution (2 Stufen innerhalb der 151)
+const gen1_oneEvolution = [
+  54,
+  55,
+  108,
+  123,
+  143,
+];
+
+// 2 Evolutionen (3 Stufen innerhalb der 151)
+const gen1_twoEvolutions = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  16,
+  17,
+  18,
+  25,
+  29,
+  30,
+  31,
+  32,
+  33,
+  34,
+  63,
+  64,
+  65,
+  74,
+  75,
+  76,
+  92,
+  93,
+  94,
+  122,
+  126,
+  137,
+  147,
+  148,
   149
 ];

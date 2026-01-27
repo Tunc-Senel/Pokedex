@@ -44,7 +44,7 @@
                         <ul class="pokemon-data-headers">
                             <li id="about-header" onclick="activateDataHeader('about')" class="active-data-header">About</li>
                             <li id="base-stats-header" onclick="activateDataHeader('base-stats')">Base Stats</li>
-                            <li id="gender-header" onclick="activateDataHeader('gender')">Gender</li>
+                            <li id="evolution-header" onclick="activateDataHeader('evolution')">Evolution</li>
                             <li id="moves-header" onclick="activateDataHeader('moves')">Moves</li>
                         </ul>
                         <!-- DIALOG POKEMON ABOUT -->
@@ -55,9 +55,8 @@
                         <table id="base-stats-data" class="base-stats-data dNone">
                            
                         </table>
-                        <!-- DIALOG POKEMON GENDER -->
-                        <table id="gender-data" class="gender-data dNone">
-                            
+                        <!-- DIALOG POKEMON EVOLUTION -->
+                        <table id="evolution-data" class="evolution-data dNone">
                         </table>
                         <!-- DIALOG POKEMON MOVES -->
                         <table id="moves-data" class="moves-data dNone">
@@ -67,6 +66,17 @@
 
                     <footer id="dialog-footer" class="dialog-footer-visible">
                         
+                        <button id="move-back-in-dialog" onclick="moveInDialog('previous')" class="arrow-left" aria-label="Vorheriges Bild">
+                            <span class="arrow-left-up"></span>
+                            <span class="arrow-middle"></span>
+                            <span class="arrow-left-down"></span>
+                        </button>
+
+                        <button id="move-forward-in-dialog" onclick="moveInDialog('next')" class="arrow-right" aria-label="Nächstes Bild">
+                            <span class="arrow-right-up"></span>
+                            <span class="arrow-middle"></span>
+                            <span class="arrow-right-down"></span>
+                        </button>
                     </footer>
                 </div>
             </dialog>

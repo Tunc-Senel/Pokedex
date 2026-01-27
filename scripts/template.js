@@ -147,18 +147,64 @@ return  `
         `
 }
 
-function templateGenderData(male, female) {
+function templateTwoEvolutionsData(base, stage1, stage2, type) {
 return  `
          <tr>
-            <td>Name</td>
-            <td>${male}</td>
+            <td>Base</td>
+            <td>
+               <img src="./assets/img/${base}.png" class="${type}-evo-border" alt="${base}">
+               <span>${base}<span/>
+            </td>
          </tr>
          <tr>
-            <td>Species</td>
-            <td>${female}</td>
+            <td>Stage 1</td>
+            <td>
+               <img src="./assets/img/${stage1}.png" class="${type}-evo-border" alt="${stage1}">
+               <span>${stage1}<span/>
+            </td>
+
+         </tr>
+          <tr>
+            <td>Stage 2</td>
+            <td>
+               <img src="./assets/img/${stage2}.png" class="${type}-evo-border" alt="${stage2}">
+               <span>${stage2}<span/>
+            </td>
          </tr>
         `
 }
+
+function templateOneEvolutionData(base, stage1, type) {
+return  `
+         <tr>
+            <td>Base</td>
+            <td>
+               <img src="./assets/img/${base}.png" class="${type}-evo-border" alt="${base}">
+               <span>${base}<span/>   
+            </td>
+         </tr>
+         <tr>
+            <td>Stage 1</td>
+            <td>
+               <img src="./assets/img/${stage1}.png" class="${type}-evo-border" alt="${stage1}">
+               <span>${stage1}<span/>
+            </td>
+         </tr>
+        `
+}
+
+function templateNoEvolutionData(base, type) {
+return  `
+         <tr>
+            <td>Base</td>
+            <td>
+               <img src="./assets/img/${base}.png" class="${type}-evo-border" alt="${base}">
+               <span>${base}<span/>     
+            </td>
+         </tr>
+        `
+}
+
 
 function templateMovesData(move1, move2, move3, move4) {
 return  `
@@ -178,21 +224,5 @@ return  `
             <td>Move 4</td>
             <td>${move4}</td>
          </tr>
-        `
-}
-
-function templateDialogFooter(id) { 
-return  `
-         <button onclick="moveInDialog('previous', ${id})" class="arrow-left" aria-label="Vorheriges Bild">
-            <span class="arrow-left-up"></span>
-            <span class="arrow-middle"></span>
-            <span class="arrow-left-down"></span>
-         </button>
-
-         <button onclick="moveInDialog('next', ${id})" class="arrow-right" aria-label="Nächstes Bild">
-            <span class="arrow-right-up"></span>
-            <span class="arrow-middle"></span>
-            <span class="arrow-right-down"></span>
-         </button>
         `
 }
