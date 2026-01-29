@@ -1,5 +1,8 @@
 // DOM ELEMENT CONSTANTS
 const POKEMONLIST = document.getElementById("pokemon-list");
+const LOADINGSPINNER = document.getElementById("loading-spinner")
+const LOADINGSPINNERMOREPOKEMON = document.getElementById("loading-spinner-more-pokemon")
+const LOADMOREPOKEMONBUTTON = document.getElementById("load-more-pokemon-buton")
 const DIALOG = document.getElementById("dialog");
 const DIALOGCONTENT = document.getElementById("dialog-content");
 const DIALOGHEADER = document.getElementById("dialog-header")
@@ -29,50 +32,97 @@ let PokemonData = {
 }
 
 let currentDialogId = 0;
-
+let type2Index = 0;
 /**
  * Generates and appends Pokémon cards to the Pokémon list in the DOM.
  * Uses different templates based on whether the Pokémon has one or two types.
  * Fetches Pokémon data from the PokéAPI and stores relevant data in sessionStorage.
  */
-async function generatePokemonCards(){
-    for (let pokemonIdIndex = 0; pokemonIdIndex < pokemonIds.length; pokemonIdIndex++) {
-        let response = await fetch(`${BASE_URL}pokemon/${pokemonIds[pokemonIdIndex]}`);
+async function generatePokemonCards(pokemonId = pokemonIds2){
+    for (let pokemonIdIndex = 0; pokemonIdIndex < pokemonId.length; pokemonIdIndex++) {
+        let response = await fetch(`${BASE_URL}pokemon/${pokemonId[pokemonIdIndex]}`);
         let responseToJson = await response.json();
         if (responseToJson.types.length > 1) {
-            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name, responseToJson.types[1].type.name));
-            pushPokemonData(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name);
+            pushPokemonData(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name,);
             pushAdditionalTypeData(responseToJson.types[1].type.name);
             saveDataToSessionStorage();
             saveAdditionalTypeDataToSessionStorage();
-
         } else {
-            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name));
             pushPokemonData(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name);
             saveDataToSessionStorage();
-       }
-    }
+        }
+        LOADINGSPINNER.classList.add("dNone")
+        type2Index = 0;
+        }
+        if (PokemonData.pokemonNames.length < 31) {
+            for (let pokemonIdIndex = 0; pokemonIdIndex < PokemonData.pokemonIDs.length; pokemonIdIndex++)
+            if (gen1DualTypeIds.includes(PokemonData.pokemonIDs[pokemonIdIndex])) {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex], PokemonData.pokemonTypes2[type2Index]));
+                    type2Index++;
+                } else {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex]));
+                }
+        } else {
+        type2Index = 13;
+        for (let pokemonIdIndex = 30; pokemonIdIndex < PokemonData.pokemonIDs.length; pokemonIdIndex++)
+            if (gen1DualTypeIds.includes(PokemonData.pokemonIDs[pokemonIdIndex])) {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex], PokemonData.pokemonTypes2[type2Index]));
+                    type2Index++;
+                } else {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex]));
+                }
+        }
 }
+
 
 /**
  * Displays Pokémon cards using stored data from sessionStorage.
  * If no data is found, it calls generatePokemonCards to fetch and display the data.
  */
-function showPokemonCards() {
-    let type2Index = 0;
-    if (PokemonData.pokemonNames.length > 0) {
-        for (let pokemonIdIndex = 0; pokemonIdIndex < pokemonIds.length; pokemonIdIndex++)
-            if (gen1DualTypeIds.includes(PokemonData.pokemonIDs[pokemonIdIndex])) {
-                POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex], PokemonData.pokemonTypes2[type2Index]));
-                type2Index++;
-            } else {
-               POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex]));
-            }
-
+function showPokemonCards(pokemonId = pokemonIds2) {
+    let type2IndexShow = 0;
+    if (PokemonData.pokemonNames.length === 0) {
+        generatePokemonCards(pokemonId);
     } else {
-        generatePokemonCards();
+        if (PokemonData.pokemonIDs.length < 31) {
+            for (let pokemonIdIndex = 0; pokemonIdIndex < PokemonData.pokemonIDs.length; pokemonIdIndex++)
+                if (gen1DualTypeIds.includes(PokemonData.pokemonIDs[pokemonIdIndex])) {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex], PokemonData.pokemonTypes2[type2IndexShow]));
+                    type2IndexShow++;
+                } else {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex]));
+                }
+        } else {
+            for (let pokemonIdIndex = 0; pokemonIdIndex < PokemonData.pokemonIDs.length - 20; pokemonIdIndex++)
+                if (gen1DualTypeIds.includes(PokemonData.pokemonIDs[pokemonIdIndex])) {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex], PokemonData.pokemonTypes2[type2IndexShow]));
+                    type2IndexShow++;
+                } else {
+                    POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex]));
+                }
+        } 
     }
-    
+    LOADINGSPINNER.classList.add("dNone")
+    LOADMOREPOKEMONBUTTON.classList.remove("dNone")
+}
+
+function showMorePokemon() {
+    let type2IndexShowMore = 13;
+    if (PokemonData.pokemonNames.length < 31) {
+        LOADMOREPOKEMONBUTTON.classList.add("dNone")
+        LOADINGSPINNERMOREPOKEMON.classList.remove("dNone")
+        generatePokemonCards();
+    } else {
+    LOADMOREPOKEMONBUTTON.classList.add("dNone")
+    for (let pokemonIdIndex = 30; pokemonIdIndex < PokemonData.pokemonIDs.length; pokemonIdIndex++)
+        if (gen1DualTypeIds.includes(PokemonData.pokemonIDs[pokemonIdIndex])) {
+            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex], PokemonData.pokemonTypes2[type2IndexShowMore]));
+            type2IndexShowMore++;
+        } else {
+            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(PokemonData.pokemonNames[pokemonIdIndex], PokemonData.pokemonIDs[pokemonIdIndex], PokemonData.pokemonTypes[pokemonIdIndex]));
+        }
+    }
+    LOADINGSPINNERMOREPOKEMON.classList.add("dNone")
 }
 
 async function openDialog(pokemonId) {
@@ -211,14 +261,14 @@ function moveInDialog(direction) {
     BASESTATSDATA.innerHTML = "";
     EVOLUTIONDATA.innerHTML = "";
     MOVESDATA.innerHTML = "";
-    let currentPokemonId = pokemonIds.findIndex((pokemonIdsID => pokemonIdsID === currentDialogId))
+    let currentPokemonId = PokemonData.pokemonIDs.findIndex((pokemonIdsID => pokemonIdsID === currentDialogId))
     let newId = 0;
     if (direction === "next") {
         newId = currentPokemonId + 1
-        openDialog(pokemonIds[newId]);
+        openDialog(PokemonData.pokemonIDs[newId]);
     } else {
         newId = currentPokemonId - 1
-        openDialog(pokemonIds[newId]);
+        openDialog(PokemonData.pokemonIDs[newId]);
     }
 }
 
@@ -316,7 +366,7 @@ function getDataFromSessionStorage() {
         PokemonData.pokemonTypes2 = storagedpokemonTypes2;
     }
 
-    showPokemonCards();
+    showPokemonCards(pokemonIds);
 }
 
 function closeDialog() {

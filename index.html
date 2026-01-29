@@ -44,7 +44,7 @@
                         <ul class="pokemon-data-headers">
                             <li id="about-header" onclick="activateDataHeader('about')" class="active-data-header">About</li>
                             <li id="base-stats-header" onclick="activateDataHeader('base-stats')">Base Stats</li>
-                            <li id="evolution-header" onclick="activateDataHeader('evolution')">Evolution</li>
+                            <li id="evolution-header" onclick="activateDataHeader('evolution')">Evolutions</li>
                             <li id="moves-header" onclick="activateDataHeader('moves')">Moves</li>
                         </ul>
                         <!-- DIALOG POKEMON ABOUT -->
@@ -83,8 +83,19 @@
 
             <!-- POKEMON LIST -->
             <ul id="pokemon-list" class="pokemon-list">
+                <div id="loading-spinner" class="loading-spinner">
+                    <img class="website-logo" src="./assets/img/pokedex.png" alt="Pokedex">
+                </div>
                 <!-- dynamic content: pokemon cards with their basic details -->
             </ul>
+            <button onclick="showMorePokemon()" id="load-more-pokemon-buton" type="button" class="load-more-pokemon-buton dNone" aria-label="Add more Pokemon to List">
+                <span>
+                Show more Pokémon
+                </span>
+            </button>
+            <div id="loading-spinner-more-pokemon" class="loading-spinner dNone">
+                    <img class="website-logo" src="./assets/img/pokedex.png" alt="Pokedex">
+            </div>
         </main>    
 
         <!-- FOOTER -->

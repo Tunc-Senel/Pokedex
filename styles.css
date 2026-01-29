@@ -65,8 +65,27 @@ header {
     background-color: var(--bg-midnight-teal);
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
 button {
   cursor: pointer;
+}
+
+@keyframes pokedexSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.loading-spinner > img {
+  width: 40px;
+  height: 40px;
+  animation: pokedexSpin 2s linear infinite;
 }
 
 .numbers {
@@ -121,7 +140,7 @@ dialog.opened {
   display: flex;
   flex-direction: column;
   width: 420px;
-  height: 620px;
+  height: 732px;
   border-radius: 20px;
   background-color: var(--bg-deep-blue-teal);
 }
@@ -257,6 +276,22 @@ table:nth-of-type(3) {
   padding: 24px 0 0 24px;
 }
 
+table:first-of-type,
+table:nth-of-type(3),
+table:nth-of-type(4) {
+  border-collapse: separate !important;
+}
+
+table:first-of-type tr,
+table:nth-of-type(3) tr,
+table:nth-of-type(4) tr {
+  border-collapse: separate !important;
+   border-spacing: 0 10px !important;
+}
+
+table:nth-of-type(3) tr > td:first-of-type {
+  padding-bottom: 8px;
+}
 
 table:nth-of-type(3) tr > td:nth-of-type(2) {
   display: flex;
@@ -267,7 +302,7 @@ table:nth-of-type(3) tr > td:nth-of-type(2) {
 
 
 table:nth-of-type(3) img {
-  width: 80px;
+  width: 100px;
   height: auto;
   border-radius: 50%;
 }
@@ -411,6 +446,17 @@ table:nth-of-type(3) tr > td:first-of-type {
     left: calc(50% - 0px);
 }
 
+.load-more-pokemon-buton {
+    background-color: var(--bg-deep-blue-teal);
+    width: 160px;
+    height: 54px;
+    color: var(--white);
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
 /* === FOOTER === */
 .footer-author-credit {
     display: flex;

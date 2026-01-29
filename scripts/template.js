@@ -11,7 +11,7 @@ return  `
          <li>
             <article class="pokemon-card">
                 <div class="pokemon-card-header">
-                <h2>${name.toUpperCase()}</h2>
+                <h2>${name[0].toUpperCase() + name.replace("-f", "♀").replace("-m", "♂").slice(1)}</h2>
                 <span class="numbers">#${id}</span>
                 </div>
 
@@ -38,7 +38,7 @@ return  `
          <li>
             <article class="pokemon-card">
                 <div class="pokemon-card-header">
-                <h2>${name.toUpperCase()}</h2>
+                <h2>${name[0].toUpperCase() + name.slice(1)}</h2>
                 <span class="numbers">#${id}</span>
                 </div>
 
@@ -58,7 +58,7 @@ function templateDialogHeader(name, id, type) {
 return  `
             <div class="close-like-section">
                 <span class="dialog-pokemon-name">
-                    ${name.toUpperCase()}
+                    ${name[0].toUpperCase() + name.replace("-f", "♀").replace("-m", "♂").slice(1)}
                 </span>
                 <button onclick="closeDialog()" type="button" class="close-like-btn" aria-label="Fenster schließen">
                     <img src="./assets/img/heart.png" alt="heart-form">
@@ -79,7 +79,7 @@ function templateDialogHeaderDualType(name, id, type, type2) {
 return  `
             <div class="close-like-section">
                 <span class="dialog-pokemon-name">
-                    ${name.toUpperCase()}
+                    ${name[0].toUpperCase() + name.slice(1)}
                 </span>
                 <button onclick="closeDialog()" type="button" class="close-like-btn" aria-label="Fenster schließen">
                     <img src="./assets/img/heart.png" alt="heart-form">
@@ -97,11 +97,21 @@ return  `
         `
 }
 
-function templateAboutData(species, height, weight, ability, ability2 = "") {
+// function templateShowMorePokemonButton() {
+// return  `
+//          <button onclick="showMorePokemon()" type="button" class="load-more-pokemon-buton" aria-label="Add more Pokemon to List">
+//             <span>
+//                Show more Pokémon
+//             <span/>
+//          </button>
+//         `
+// }
+
+function templateAboutData(species, height, weight, ability, ability2 = " ") {
 return  `
          <tr>
             <td>Species</td>
-            <td>${species}</td>
+            <td>${species[0].toUpperCase() + species.slice(1)}</td>
          </tr>
          <tr>
             <td>Height</td>
@@ -113,7 +123,13 @@ return  `
          </tr>
          <tr>
             <td>Abilities</td>
-            <td>${ability}   ${ability2}</td>
+            <td>
+               ${ability 
+                     .split("-")
+                     .map(word => word[0].toUpperCase() + word.slice(1))
+                     .join(" ")
+                 }${ability2 && ability2.length > 1 ? ', ' + ability2.split("-").map(word => word[0].toUpperCase() + word.slice(1)).join(" ") : ''}
+            </td>
          </tr>
         `
 }
@@ -121,27 +137,27 @@ return  `
 function templateBaseStatsData(hp, hpValue, attack, attackValue, defense, defenseValue, specialAttack, specialAttackValue, specialDefense, specialDefenseValue, speed, speedValue) {
 return  `
          <tr>
-            <td>${hp}</td>
+            <td>${hp.toUpperCase()}</td>
             <td>${hpValue}</td>
          </tr>
          <tr>
-            <td>${attack}</td>
+            <td>${attack[0].toUpperCase() + attack.slice(1)}</td>
             <td>${attackValue}</td>
          </tr>
          <tr>
-            <td>${defense}</td>
+            <td>${defense[0].toUpperCase() + defense.slice(1)}</td>
             <td>${defenseValue}</td>
          </tr>
          <tr>
-            <td>${specialAttack}</td>
+            <td>Sp. Atk</td>
             <td>${specialAttackValue}</td>
          </tr>
          <tr>
-            <td>${specialDefense}</td>
+            <td>Sp. Def</td>
             <td>${specialDefenseValue}</td>
          </tr>
          <tr>
-            <td>${speed}</td>
+            <td>${speed[0].toUpperCase() + speed.slice(1)}</td>
             <td>${speedValue}</td>
          </tr>
         `
@@ -153,14 +169,14 @@ return  `
             <td>Base</td>
             <td>
                <img src="./assets/img/${base}.png" class="${type}-evo-border" alt="${base}">
-               <span>${base}<span/>
+               <span>${base[0].toUpperCase() + base.replace("-f", "♀").replace("-m", "♂").replace("-", " ").replace("jr", "Jr.").slice(1)}<span/>
             </td>
          </tr>
          <tr>
             <td>Stage 1</td>
             <td>
                <img src="./assets/img/${stage1}.png" class="${type}-evo-border" alt="${stage1}">
-               <span>${stage1}<span/>
+               <span>${stage1[0].toUpperCase() + stage1.slice(1).replace("-m", ". M")}<span/>
             </td>
 
          </tr>
@@ -168,7 +184,7 @@ return  `
             <td>Stage 2</td>
             <td>
                <img src="./assets/img/${stage2}.png" class="${type}-evo-border" alt="${stage2}">
-               <span>${stage2}<span/>
+               <span>${stage2[0].toUpperCase() + stage2.slice(1).replace("-r", ". R").replace("-z", "-Z")}<span/>
             </td>
          </tr>
         `
@@ -180,14 +196,14 @@ return  `
             <td>Base</td>
             <td>
                <img src="./assets/img/${base}.png" class="${type}-evo-border" alt="${base}">
-               <span>${base}<span/>   
+               <span>${base[0].toUpperCase() + base.slice(1)}<span/>   
             </td>
          </tr>
          <tr>
             <td>Stage 1</td>
             <td>
                <img src="./assets/img/${stage1}.png" class="${type}-evo-border" alt="${stage1}">
-               <span>${stage1}<span/>
+               <span>${stage1[0].toUpperCase() + stage1.slice(1)}<span/>
             </td>
          </tr>
         `
@@ -199,7 +215,7 @@ return  `
             <td>Base</td>
             <td>
                <img src="./assets/img/${base}.png" class="${type}-evo-border" alt="${base}">
-               <span>${base}<span/>     
+               <span>${base[0].toUpperCase() + base.slice(1)}<span/>     
             </td>
          </tr>
         `
@@ -210,19 +226,37 @@ function templateMovesData(move1, move2, move3, move4) {
 return  `
          <tr>
             <td>Move 1</td>
-            <td>${move1}</td>
+            <td>${move1 
+                     .split("-")
+                     .map(word => word[0].toUpperCase() + word.slice(1))
+                     .join(" ")
+                 } 
+            </td>
          </tr>
          <tr>
             <td>Move 2</td>
-            <td>${move2}</td>
+            <td>${move2 
+                     .split("-")
+                     .map(word => word[0].toUpperCase() + word.slice(1))
+                     .join(" ")
+                 } </td>
          </tr>
          <tr>
             <td>Move 3</td>
-            <td>${move3}</td>
+            <td>${move3 
+                     .split("-")
+                     .map(word => word[0].toUpperCase() + word.slice(1))
+                     .join(" ")
+                 } </td>
          </tr>
          <tr>
             <td>Move 4</td>
-            <td>${move4}</td>
+            <td>${move4 
+                     .split("-")
+                     .map(word => word[0].toUpperCase() + word.slice(1))
+                     .join(" ")
+                 } 
+            </td>
          </tr>
         `
 }
