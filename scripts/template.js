@@ -38,7 +38,7 @@ return  `
          <li>
             <article class="pokemon-card">
                 <div class="pokemon-card-header">
-                <h2>${name[0].toUpperCase() + name.slice(1)}</h2>
+                <h2>${name[0].toUpperCase() + name.replace("-mi", ". Mi").slice(1)}</h2>
                 <span class="numbers">#${id}</span>
                 </div>
 
@@ -61,8 +61,7 @@ return  `
                     ${name[0].toUpperCase() + name.replace("-f", "♀").replace("-m", "♂").slice(1)}
                 </span>
                 <button onclick="closeDialog()" type="button" class="close-like-btn" aria-label="Fenster schließen">
-                    <img src="./assets/img/heart.png" alt="heart-form">
-                    <img src="./assets/img/heart-filled.png" class="dNone" alt="heart-form">
+                  &times;
                 </button>
             </div>
             <div class="dialog-pokemon-header-footer">
@@ -82,8 +81,7 @@ return  `
                     ${name[0].toUpperCase() + name.slice(1)}
                 </span>
                 <button onclick="closeDialog()" type="button" class="close-like-btn" aria-label="Fenster schließen">
-                    <img src="./assets/img/heart.png" alt="heart-form">
-                    <img src="./assets/img/heart-filled.png" class="dNone" alt="heart-form">
+                   &times;
                 </button>
             </div>
             <div class="dialog-pokemon-header-footer">
@@ -97,21 +95,11 @@ return  `
         `
 }
 
-// function templateShowMorePokemonButton() {
-// return  `
-//          <button onclick="showMorePokemon()" type="button" class="load-more-pokemon-buton" aria-label="Add more Pokemon to List">
-//             <span>
-//                Show more Pokémon
-//             <span/>
-//          </button>
-//         `
-// }
-
 function templateAboutData(species, height, weight, ability, ability2 = " ") {
 return  `
          <tr>
             <td>Species</td>
-            <td>${species[0].toUpperCase() + species.slice(1)}</td>
+            <td>${species[0].toUpperCase() + species.replace("-mi", ". Mi").replace("-f", "♀").replace("-m", "♂").slice(1)}</td>
          </tr>
          <tr>
             <td>Height</td>
