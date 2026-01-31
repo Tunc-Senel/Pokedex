@@ -7,8 +7,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pokedex</title>
 
-        <!-- FAVICONS -->
-
         <!-- AUTOREN-STYLESHEET -->
         <link rel="stylesheet" type="text/css" href="./assets/styles/fonts.css">
         <link rel="stylesheet" type="text/css" href="./styles.css">
@@ -17,15 +15,19 @@
     </head>
 
     <body>
+
         <!-- HEADER -->
         <header class="full-bleed-midnight-teal-background">
+
             <!-- LOGO & TITLE -->
             <div class="website-logo-title">
                 <img class="website-logo" src="./assets/img/pokedex.png" alt="Pokedex">
                 <span>Pokedex</span>
             </div>
+
             <!-- SEARCH INPUT -->
             <input id="search-pokemon-input" type="text" value="" placeholder="Pokémon...">
+
         </header>
 
         <!-- MAIN -->
@@ -33,13 +35,18 @@
 
             <!-- DIALOG -->
             <dialog id="dialog">
+
+                <!-- DIALOG CONTENT -->
                 <div id="dialog-content" class="dialog-content">
+
                     <!-- DIALOG HEADER -->
-                     <header id="dialog-header" class="dialog-header-visible">
-                        
+                    <header id="dialog-header" class="dialog-header-visible">
+                        <!-- dynamic content: Pokemon image and their basic details -->
                     </header>
+
                     <!-- DIALOG POKEMON DATA -->
                     <section id="dialog-pokemon-data" class="dialog-pokemon-data">
+
                         <!-- DIALOG POKEMON DATA HEADERS -->
                         <ul class="pokemon-data-headers">
                             <li id="about-header" onclick="activateDataHeader('about')" class="active-data-header">About</li>
@@ -47,64 +54,86 @@
                             <li id="evolution-header" onclick="activateDataHeader('evolution')">Evolutions</li>
                             <li id="moves-header" onclick="activateDataHeader('moves')">Moves</li>
                         </ul>
+
                         <!-- DIALOG POKEMON ABOUT -->
                         <table id="about-data" class="about-data">
-                            
+                            <!-- dynamic content: Pokemon data: Species, Height, Weight, Abilities -->
                         </table>
+
                         <!-- DIALOG POKEMON BASE STATS -->
                         <table id="base-stats-data" class="base-stats-data dNone">
-                           
+                           <!-- dynamic content: Pokemon data: HP, Attack, Defense, Special Attack, Special Defense, Speed -->
                         </table>
+
                         <!-- DIALOG POKEMON EVOLUTION -->
                         <table id="evolution-data" class="evolution-data dNone">
+                            <!-- dynamic content: Pokemon data: Evolution stages if available (Base, Stage 1, Stage 2) -->
                         </table>
+
                         <!-- DIALOG POKEMON MOVES -->
                         <table id="moves-data" class="moves-data dNone">
-                           
+                           <!-- dynamic content: Pokemon data: Four specific moves for each Pokemon -->
                         </table>
+
                     </section>
 
+                    <!-- DIALOG FOOTER -->
                     <footer id="dialog-footer" class="dialog-footer-visible">
                         
-                        <button id="move-back-in-dialog" onclick="moveInDialog('previous')" class="arrow-left" aria-label="Vorheriges Bild">
+                        <!-- DIALOG NAVIGATION BUTTON MOVE BACK IN DIALOG -->
+                        <button id="move-back-in-dialog" onclick="moveInDialog('previous')" class="arrow-left" aria-label="Previous Pokemon">
                             <span class="arrow-left-up"></span>
                             <span class="arrow-middle"></span>
                             <span class="arrow-left-down"></span>
                         </button>
 
-                        <button id="move-forward-in-dialog" onclick="moveInDialog('next')" class="arrow-right" aria-label="Nächstes Bild">
+                        <!-- DIALOG NAVIGATION BUTTON MOVE FORWARD IN DIALOG -->
+                        <button id="move-forward-in-dialog" onclick="moveInDialog('next')" class="arrow-right" aria-label="Next Pokemon">
                             <span class="arrow-right-up"></span>
                             <span class="arrow-middle"></span>
                             <span class="arrow-right-down"></span>
                         </button>
+
                     </footer>
+
                 </div>
+
             </dialog>
 
             <!-- POKEMON LIST -->
             <ul id="pokemon-list" class="pokemon-list">
+
+                <!-- LOADING SPINNER USERFEEDBACK -->
                 <div id="loading-spinner" class="loading-spinner">
                     <img class="website-logo" src="./assets/img/pokedex.png" alt="Pokedex">
                 </div>
+
                 <!-- dynamic content: pokemon cards with their basic details -->
             </ul>
-            <button onclick="showMorePokemon()" id="load-more-pokemon-buton" type="button" class="load-more-pokemon-buton dNone" aria-label="Add more Pokemon to List">
+
+            <!-- LOAD MORE POKEMON BUTTON -->
+            <button onclick="showMorePokemon()" id="load-more-pokemon-button" type="button" class="load-more-pokemon-buton dNone" aria-label="Add more Pokemon to List">
                 <span>
                     Show more Pokémon
                 </span>
             </button>
+
+            <!-- LOADING SPINNER USERFEEDBACK FOR MORE POKEMON -->
             <div id="loading-spinner-more-pokemon" class="loading-spinner dNone">
-                    <img class="website-logo" src="./assets/img/pokedex.png" alt="Pokedex">
+                <img class="website-logo" src="./assets/img/pokedex.png" alt="Pokedex">
             </div>
+
         </main>    
 
         <!-- FOOTER -->
-        <footer class="full-bleed-midnight-teal-background footer-author-credit">
+        <footer class="full-bleed-midnight-teal-background footer-author-credit" aria-labelledby="author-credit icon-credit">
+
             <!-- AUTHOR & ICON CREDIT -->
-            <span>
+            <span aria-label="author-credit">
                 Tunc Senel
             </span>
-           <span>
+
+           <span aria-label="icon-credit">
                 <a target="_blank" href="https://icons8.com/icon/ih6hQU67d27H/pokedex">
                     Pokedex
                 </a>
@@ -115,6 +144,7 @@
                     Icons8
                 </a>
             </span>
+
         </footer>
 
         <!-- AUTOREN-JAVASCRIPT -->
@@ -123,4 +153,5 @@
         <script src="./main.js" defer></script>
 
     </body>
+    
 </html>

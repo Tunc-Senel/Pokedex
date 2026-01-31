@@ -1,30 +1,33 @@
 // DOM ELEMENT CONSTANTS
-const SEARCHPOKEMON = document.getElementById("search-pokemon-input")
+const SEARCHPOKEMON = document.getElementById("search-pokemon-input");
 const POKEMONLIST = document.getElementById("pokemon-list");
-const LOADINGSPINNER = document.getElementById("loading-spinner")
-const LOADINGSPINNERMOREPOKEMON = document.getElementById("loading-spinner-more-pokemon")
-const LOADMOREPOKEMONBUTTON = document.getElementById("load-more-pokemon-buton")
+const LOADINGSPINNER = document.getElementById("loading-spinner");
+const LOADINGSPINNERMOREPOKEMON = document.getElementById("loading-spinner-more-pokemon");
+const LOADMOREPOKEMONBUTTON = document.getElementById("load-more-pokemon-button");
 const DIALOG = document.getElementById("dialog");
 const DIALOGCONTENT = document.getElementById("dialog-content");
-const DIALOGHEADER = document.getElementById("dialog-header")
-const DIALOGFOOTER = document.getElementById("dialog-footer")
+const DIALOGHEADER = document.getElementById("dialog-header");
+const DIALOGFOOTER = document.getElementById("dialog-footer");
 const BODY = document.querySelector("body");
 const ABOUTHEADER = document.getElementById("about-header");
 const BASESTATSHEADER = document.getElementById("base-stats-header");
 const EVOLUTIONHEADER = document.getElementById("evolution-header");
-const MOVESHEADER = document.getElementById("moves-header")
-const ABOUTDATA = document.getElementById("about-data")
-const BASESTATSDATA = document.getElementById("base-stats-data")
-const EVOLUTIONDATA = document.getElementById("evolution-data")
-const MOVESDATA = document.getElementById("moves-data")
-const DIALOGPOKEMONDATA = document.getElementById("dialog-pokemon-data")
-const DIALOGARROWLEFTBUTTON = document.getElementById("move-back-in-dialog")
-const DIALOGARROWRIGHTBUTTON =  document.getElementById("move-forward-in-dialog")
+const MOVESHEADER = document.getElementById("moves-header");
+const ABOUTDATA = document.getElementById("about-data");
+const BASESTATSDATA = document.getElementById("base-stats-data");
+const EVOLUTIONDATA = document.getElementById("evolution-data");
+const MOVESDATA = document.getElementById("moves-data");
+const DIALOGPOKEMONDATA = document.getElementById("dialog-pokemon-data");
+const DIALOGARROWLEFTBUTTON = document.getElementById("move-back-in-dialog");
+const DIALOGARROWRIGHTBUTTON =  document.getElementById("move-forward-in-dialog");
 
-// API CONSTANTS
+// API CONSTANT
 const BASE_URL  = "https://pokeapi.co/api/v2/"
 
-// Arrays of Pokemon Data that will be stored in sessionStorage
+/**
+ * Pokemon Data Object to store fetched pokemon data and use it to display pokemon cards 
+ * and dialog information, also through sessionStorage to persist data across page reloads.
+ */
 let pokemonData = {
  "pokemonNames": [],
  "pokemonIDs": [],
@@ -32,16 +35,56 @@ let pokemonData = {
  "pokemonTypes2": [],
 }
 
+// Helper Arrays and Variables
 let currentPokemonDisplayedIds = [];
-
-
 let currentDialogId = 0;
-
+let base = "";
+let stage1 = "";
+let stage2 = "";
 let type2IndexAddedPokemonStartIndex = 13;
+let indexOfCurrentlyfilteredPokemon = 0;
+let indexOfCurrentlyfilteredPokemon2 = 0;
+let indexOf2typePokemon = 0;
+let startIndexOfAdditionalPokemon = 30;
+
+/**
+ * Displays Pokémon cards using stored data from sessionStorage.
+ * If no data is found, it calls generatePokemonCards to fetch and display the data.
+ */
+function showPokemonCards(pokemonId = pokemonIds2) {
+    let initialDifferenceSavedToBeDisplayedPokemon = 0
+    let addedDifferenceSavedToBeDisplayedPokemon  = 20
+    if (pokemonData.pokemonNames.length === 0) {
+        generatePokemonCards(pokemonId);
+    } else if (pokemonData.pokemonNames.length === startIndexOfAdditionalPokemon) {
+        displayInitilalPokemonCards2(initialDifferenceSavedToBeDisplayedPokemon);
+    } else {
+        displayInitilalPokemonCards2(addedDifferenceSavedToBeDisplayedPokemon)
+    }
+    hideLoadingSpinner();
+    displayLoadMoreButton();
+    currentPokemonDisplayedIds = pokemonIds;
+}
+
+// Loads more Pokémon cards when the load more button is clicked.
+function showMorePokemon() {
+    if (pokemonData.pokemonNames.length < startIndexOfAdditionalPokemon + 1) {
+        hideLoadMoreButton();
+        showLoadingSpinnerMorePokemon();
+        generatePokemonCards();
+    } else {
+        hideLoadMoreButton();
+        displayAdditionalPokemonCards()
+    }
+    hideLoadingSpinnerMorePokemon();
+    currentPokemonDisplayedIds = pokemonData.pokemonIDs;
+}
+
 /**
  * Generates and appends Pokémon cards to the Pokémon list in the DOM.
  * Uses different templates based on whether the Pokémon has one or two types.
  * Fetches Pokémon data from the PokéAPI and stores relevant data in sessionStorage.
+ * @param {Array} pokemonId - An array of Pokémon IDs to fetch and display. Defaults to 'pokemonIds2'.
  */
 async function generatePokemonCards(pokemonId = pokemonIds2){
     for (let pokemonIdIndex = 0; pokemonIdIndex < pokemonId.length; pokemonIdIndex++) {
@@ -50,39 +93,17 @@ async function generatePokemonCards(pokemonId = pokemonIds2){
         savePokemonData(responseToJson);
         hideLoadingSpinner();
     }
-    if (pokemonData.pokemonIDs.length <= 30) {
+    if (pokemonData.pokemonIDs.length <= startIndexOfAdditionalPokemon) {
         displayInitilalPokemonCards();
     } else {
         displayAdditionalPokemonCards();
         } 
 }
 
-// Helpers functions
-// Hides the loading spinner element.
-function hideLoadingSpinner() {
-    LOADINGSPINNER.classList.add("dNone");
-}
-
-// Shows the loading spinner for more Pokémon element.
-function showLoadingSpinnerMorePokemon() {
-    LOADINGSPINNERMOREPOKEMON.classList.remove("dNone");
-}
-
-// Hides the loading spinner for more Pokémon element.
-function hideLoadingSpinnerMorePokemon() {
-    LOADINGSPINNERMOREPOKEMON.classList.add("dNone");
-}
-
-// Displays the load more button element.
-function displayLoadMoreButton() {
-    LOADMOREPOKEMONBUTTON.classList.remove("dNone");
-}
-
-// Hides the load more button element.
-function hideLoadMoreButton() {
-    LOADMOREPOKEMONBUTTON.classList.add("dNone");
-}
-
+/** 
+ * Saves Pokémon data to the 'pokemonData' object and sessionStorage.
+ * @param {Object} responseToJson - The Pokémon data from the API response.
+ */
 function savePokemonData(responseToJson) {
     if (responseToJson.types.length > 1) {
         pushPokemonData(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name,);
@@ -93,6 +114,26 @@ function savePokemonData(responseToJson) {
         pushPokemonData(responseToJson.name, responseToJson.id, responseToJson.types[0].type.name);
         saveDataToSessionStorage();
     }
+}
+
+/**
+ * Pushes Pokémon data into the respective arrays.
+ * @param {string} name - The name of the Pokémon.
+ * @param {number} id - The ID of the Pokémon.
+ * @param {string} type - The primary type of the Pokémon.
+ */
+function pushPokemonData(name, id, type) {
+    pokemonData.pokemonNames.push(name);
+    pokemonData.pokemonIDs.push(id);
+    pokemonData.pokemonTypes.push(type);
+}
+
+ /**
+ * Pushes additional type data into the respective array.
+ * @param {string} type2 - The secondary type of the Pokémon.
+ */
+function pushAdditionalTypeData(type2) {
+    pokemonData.pokemonTypes2.push(type2);
 }
 
 /**
@@ -114,6 +155,11 @@ function displayInitilalPokemonCards() {
     }
 }
 
+/**
+ * Displays initial Pokémon cards, accounting for a specified difference in the number of Pokémon to be displayed.
+ * @param {number} differenceSavedToBeDisplayedPokemon - The difference in the number of Pokémon to be displayed compared to the total available.
+ * 
+ */
 function displayInitilalPokemonCards2(differenceSavedToBeDisplayedPokemon) {
     let type2IndexShow = 0;
     for (let pokemonIdIndex = 0; pokemonIdIndex < pokemonData.pokemonIDs.length - differenceSavedToBeDisplayedPokemon; pokemonIdIndex++) {
@@ -126,9 +172,12 @@ function displayInitilalPokemonCards2(differenceSavedToBeDisplayedPokemon) {
     }
 }
 
+/**
+ * Displays additional Pokémon cards beyond the initial set.
+ */
 function displayAdditionalPokemonCards() {
-    let type2IndexShow = 13;
-    for (let pokemonIdIndex = 30; pokemonIdIndex < pokemonData.pokemonIDs.length; pokemonIdIndex++) {
+    let type2IndexShow = type2IndexAddedPokemonStartIndex;
+    for (let pokemonIdIndex = startIndexOfAdditionalPokemon; pokemonIdIndex < pokemonData.pokemonIDs.length; pokemonIdIndex++) {
         if (gen1DualTypeIds.includes(pokemonData.pokemonIDs[pokemonIdIndex])) {
             POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(pokemonData.pokemonNames[pokemonIdIndex], pokemonData.pokemonIDs[pokemonIdIndex], pokemonData.pokemonTypes[pokemonIdIndex], pokemonData.pokemonTypes2[type2IndexShow]));
             type2IndexShow++;
@@ -139,36 +188,84 @@ function displayAdditionalPokemonCards() {
 }
 
 /**
- * Displays Pokémon cards using stored data from sessionStorage.
- * If no data is found, it calls generatePokemonCards to fetch and display the data.
+ * Opens a dialog to display detailed information about a Pokémon.
+ * @param {number} pokemonId - The ID of the Pokémon to display in the dialog.
  */
-function showPokemonCards(pokemonId = pokemonIds2) {
-    let initialDifferenceSavedToBeDisplayedPokemon = 0
-    let addedDifferenceSavedToBeDisplayedPokemon  = 20
-    if (pokemonData.pokemonNames.length === 0) {
-        generatePokemonCards(pokemonId);
-    } else if (pokemonData.pokemonNames.length === 30) {
-        displayInitilalPokemonCards2(initialDifferenceSavedToBeDisplayedPokemon);
-    } else {
-        displayInitilalPokemonCards2(addedDifferenceSavedToBeDisplayedPokemon)
-    }
-    hideLoadingSpinner();
+async function openDialog(pokemonId) {
+    currentDialogId = pokemonId;
+    setUpDialog();
     displayLoadMoreButton();
-    currentPokemonDisplayedIds = pokemonIds;
+    let response = await fetch(`${BASE_URL}pokemon/${pokemonId}`);
+    let responseToJson = await response.json();
+    let responseEvo = await fetch(`${BASE_URL}pokemon-species/${pokemonId}`);
+    let responseEvoToJson = await responseEvo.json();
+    let responseEvoData = await fetch(responseEvoToJson.evolution_chain.url);
+    let responseEvoDataToJson = await responseEvoData.json();
+    
+    displayPokemonInDialogBasedOnEvolutions(responseToJson, responseEvoDataToJson, pokemonId);
+    updateDialogNavigationButtons();
 }
 
-// Loads more Pokémon cards when the load more button is clicked.
-function showMorePokemon() {
-    if (pokemonData.pokemonNames.length < 31) {
-        hideLoadMoreButton();
-        showLoadingSpinnerMorePokemon();
-        generatePokemonCards();
+/** Displays a Pokémon in a dialog based on its evolution stages.
+ * @param {Object} responseToJson - The Pokémon data from the API response.
+ * @param {Object} responseEvoDataToJson - The evolution chain data from the API response.
+ */
+function displayPokemonInDialogBasedOnEvolutions(responseToJson, responseEvoDataToJson, pokemonId) {
+ if (gen1_twoEvolutions.includes(pokemonId)) {
+        displayPokemonInDialogWith2Evolutions(responseToJson, responseEvoDataToJson);
+    } else if (gen1_oneEvolution.includes(pokemonId)) {
+        displayPokemonInDialogWith1Evolution(responseToJson, responseEvoDataToJson);
     } else {
-        hideLoadMoreButton();
-        displayAdditionalPokemonCards()
+        displayPokemonInDialogWithNoEvolutions(responseToJson, responseEvoDataToJson);
     }
-    hideLoadingSpinnerMorePokemon();
-    currentPokemonDisplayedIds = pokemonData.pokemonIDs;
+}
+
+/** Displays a Pokémon in a dialog with two evolutions.
+ * @param {Object} responseToJson - The Pokémon data from the API response.
+ * @param {Object} responseEvoDataToJson - The evolution chain data from the API response.
+ */
+function displayPokemonInDialogWith2Evolutions(responseToJson, responseEvoDataToJson) {
+    base = responseEvoDataToJson.chain.species.name
+    stage1 = responseEvoDataToJson.chain.evolves_to[0].species.name
+    stage2 = responseEvoDataToJson.chain.evolves_to[0].evolves_to[0].species.name
+
+    DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
+    if (responseToJson.abilities.length > 1) {
+        displayPokemonInDialogWith2EvolutionsAndMultipleAbilities(responseToJson, base, stage1, stage2)
+    } else {
+        displayPokemonInDialogWith2EvolutionsAndOneAbility(responseToJson, base, stage1, stage2)
+    }
+}
+
+/** Displays a Pokémon in a dialog with one evolution.
+ * @param {Object} responseToJson - The Pokémon data from the API response.
+ * @param {Object} responseEvoDataToJson - The evolution chain data from the API response.
+ */
+function displayPokemonInDialogWith1Evolution(responseToJson, responseEvoDataToJson) {
+    base = responseEvoDataToJson.chain.species.name
+    stage1 = responseEvoDataToJson.chain.evolves_to[0].species.name
+
+    DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
+    if (responseToJson.abilities.length > 1) {
+        displayPokemonInDialogWithOneEvolutionAndTwoAbilities(responseToJson, base, stage1)
+    } else {
+        displayPokemonInDialogWithOneEvolutionAndOneAbility(responseToJson, base, stage1)
+    }
+}
+
+/** Displays a Pokémon in a dialog with no evolutions.
+ * @param {Object} responseToJson - The Pokémon data from the API response.
+ * @param {Object} responseEvoDataToJson - The evolution chain data from the API response.
+ */
+function displayPokemonInDialogWithNoEvolutions(responseToJson, responseEvoDataToJson) {
+    base = responseEvoDataToJson.chain.species.name;
+
+    DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
+    if (responseToJson.abilities.length > 1) {
+        displayPokemonInDialogWithNoEvolutionsAndTwoAbilities(responseToJson, base)
+    } else {
+        displayPokemonInDialogWithOneAbility(responseToJson, base)
+    }
 }
 
 /**
@@ -302,67 +399,28 @@ function displayPokemonInDialogWithOneAbility(responseToJson, base) {
     }
 }
 
-async function openDialog(pokemonId) {
-    let base = "";
-    let stage1 = "";
-    let stage2 = "";
-    currentDialogId = pokemonId;
-    DIALOG.showModal();
-    DIALOG.classList.add("opened");
-    DIALOG.focus();
-    BODY.classList.add("no-scroll");
+// Closes the dialog and resets its state.
+function closeDialog() {
+    DIALOG.close();
+    DIALOG.classList.remove("opened");
+    resetDialogHeaderClass();
+    clearDialogData();
+    enableBodyScroll();
+    displayAbout();
+};
 
-    let response = await fetch(`${BASE_URL}pokemon/${pokemonId}`);
-    let responseToJson = await response.json();
-    let responseEvo = await fetch(`${BASE_URL}pokemon-species/${pokemonId}`);
-    let responseEvoToJson = await responseEvo.json();
-    let responseEvoData = await fetch(responseEvoToJson.evolution_chain.url);
-    let responseEvoDataToJson = await responseEvoData.json();
-    
-    if (gen1_twoEvolutions.includes(pokemonId)) {
-        base = responseEvoDataToJson.chain.species.name
-        stage1 = responseEvoDataToJson.chain.evolves_to[0].species.name
-        stage2 = responseEvoDataToJson.chain.evolves_to[0].evolves_to[0].species.name
-
-        DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
-        if (responseToJson.abilities.length > 1) {
-            displayPokemonInDialogWith2EvolutionsAndMultipleAbilities(responseToJson, base, stage1, stage2)
-        } else {
-            displayPokemonInDialogWith2EvolutionsAndOneAbility(responseToJson, base, stage1, stage2)
-        }
-    } else if (gen1_oneEvolution.includes(pokemonId)) {
-        base = responseEvoDataToJson.chain.species.name
-        stage1 = responseEvoDataToJson.chain.evolves_to[0].species.name
-
-        DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
-        if (responseToJson.abilities.length > 1) {
-            displayPokemonInDialogWithOneEvolutionAndTwoAbilities(responseToJson, base, stage1)
-        } else {
-            displayPokemonInDialogWithOneEvolutionAndOneAbility(responseToJson, base, stage1)
-        }
-    } else {
-        base = responseEvoDataToJson.chain.species.name;
-
-        DIALOGHEADER.classList.add(`${responseToJson.types[0].type.name}-bg`)
-        if (responseToJson.abilities.length > 1) {
-            displayPokemonInDialogWithNoEvolutionsAndTwoAbilities(responseToJson, base)
-        } else {
-            displayPokemonInDialogWithOneAbility(responseToJson, base)
-        }
+/**
+ * Moves in the dialog either to the next or previous pokemon based on the direction parameter.
+ * @param {string} direction - The direction to move in the dialog ("next" or "previous").
+ */
+function moveInDialog(direction) {
+    resetDialogHeaderClass();
+    clearDialogData();
+    if (direction === "next") {
+        displaysNextPokemonInDialog();
+    } else if (direction === "previous") {
+        displaysPreviousPokemonInDialog();
     }
-    
-    currentPokemonDisplayedIds[0] === currentDialogId ? DIALOGARROWLEFTBUTTON.disabled = true : DIALOGARROWLEFTBUTTON.disabled = false;
-    currentPokemonDisplayedIds[currentPokemonDisplayedIds.length - 1] === currentDialogId ? DIALOGARROWRIGHTBUTTON.disabled = true  : DIALOGARROWRIGHTBUTTON.disabled = false;
-
-}
-
-// Clears the dialog data sections.
-function clearDialogData() {
-    DIALOGHEADER.innerHTML = "";
-    ABOUTDATA.innerHTML = "";
-    BASESTATSDATA.innerHTML = "";
-    EVOLUTIONDATA.innerHTML = "";
-    MOVESDATA.innerHTML = "";
 }
 
 // displays the next pokemon in the dialog
@@ -381,20 +439,90 @@ function displaysPreviousPokemonInDialog() {
     openDialog(pokemonData.pokemonIDs[newId]);
 }
 
-
-
-/* 
- * Moves in the dialog either to the next or previous pokemon based on the direction parameter.
- * @param {string} direction - The direction to move in the dialog ("next" or "previous").
+/**
+ * Activates the appropriate data section in the dialog based on the activated header.
+ * @param {string} activatedheader - The header that was activated ("about", "base-stats", "evolution", or others).
  */
-function moveInDialog(direction) {
-    DIALOGHEADER.className = "dialog-header-visible"
-    clearDialogData();
-    if (direction === "next") {
-        displaysNextPokemonInDialog();
-    } else if (direction === "previous") {
-        displaysPreviousPokemonInDialog();
+function activateDataHeader(activatedheader) {
+    if (activatedheader === "about") {
+        displayAbout();
+    } else if (activatedheader === 'base-stats' ) {
+        displayBaseStats();
+    } else if (activatedheader === "evolution") {
+        displayEvolution();
+    } else {
+        displayMoves();
     }
+}
+
+/** Filters and displays Pokémon based on the search value.
+ * @param {string} searchValue - The value to search for in Pokémon names.
+ */
+function filterAndDisplayPokemon(searchValue) {
+    let filteredPokemonNames = pokemonData.pokemonNames.filter(name => name && name.includes(searchValue));
+    for (let pokemonIdIndex = 0; pokemonIdIndex < filteredPokemonNames.length; pokemonIdIndex++) {
+        indexOfCurrentlyfilteredPokemon = pokemonData.pokemonNames.findIndex(name => name == filteredPokemonNames[pokemonIdIndex]);
+        if (gen1DualTypeIds.includes(pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon])) {
+            indexOf2typePokemon = gen1DualTypeIds.findIndex(type2 => type2 == pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon]);
+            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(filteredPokemonNames[pokemonIdIndex], pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon], pokemonData.pokemonTypes[indexOfCurrentlyfilteredPokemon], pokemonData.pokemonTypes2[indexOf2typePokemon]));
+        } else {
+            indexOfCurrentlyfilteredPokemon2 = pokemonData.pokemonNames.findIndex(name => name == filteredPokemonNames[pokemonIdIndex]);
+            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(filteredPokemonNames[pokemonIdIndex], pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon], pokemonData.pokemonTypes[indexOfCurrentlyfilteredPokemon2]));
+        }
+        LOADMOREPOKEMONBUTTON.classList.add("dNone");
+    }
+}
+
+/**
+ * Generates and displays Pokémon cards based on the current displayed Pokémon IDs.
+ * Iterates through the current Pokémon IDs and creates cards for each Pokémon,
+ * handling dual-type Pokémon appropriately.
+ */
+function displayBeforeSearchPokemonCards() {
+    let type2IndexShow = 0;
+    for (let currentPokemonDisplayedIndex = 0; currentPokemonDisplayedIndex < currentPokemonDisplayedIds.length; currentPokemonDisplayedIndex++) {
+        if (gen1DualTypeIds.includes(pokemonData.pokemonIDs[currentPokemonDisplayedIndex])) {
+            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(pokemonData.pokemonNames[currentPokemonDisplayedIndex], pokemonData.pokemonIDs[currentPokemonDisplayedIndex], pokemonData.pokemonTypes[currentPokemonDisplayedIndex], pokemonData.pokemonTypes2[type2IndexShow]));
+            type2IndexShow++;
+        } else {
+            POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(pokemonData.pokemonNames[currentPokemonDisplayedIndex], pokemonData.pokemonIDs[currentPokemonDisplayedIndex], pokemonData.pokemonTypes[currentPokemonDisplayedIndex]));
+        }
+    }
+    if (currentPokemonDisplayedIds.length > startIndexOfAdditionalPokemon) {
+        hideLoadMoreButton()
+
+    } else {
+        displayLoadMoreButton()
+    }
+}
+
+// HELPER FUNCTIONS
+// Sets up and opens the dialog
+function setUpDialog() {
+    DIALOG.showModal();
+    DIALOG.classList.add("opened");
+    DIALOG.focus();
+    BODY.classList.add("no-scroll");
+}
+
+// Updates the state of the dialog navigation buttons.
+function updateDialogNavigationButtons() {
+    currentPokemonDisplayedIds[0] === currentDialogId ? DIALOGARROWLEFTBUTTON.disabled = true : DIALOGARROWLEFTBUTTON.disabled = false;
+    currentPokemonDisplayedIds[currentPokemonDisplayedIds.length - 1] === currentDialogId ? DIALOGARROWRIGHTBUTTON.disabled = true  : DIALOGARROWRIGHTBUTTON.disabled = false;
+}
+
+// Resets the dialog header class to its default state.
+function resetDialogHeaderClass() {
+    DIALOGHEADER.className = "dialog-header-visible"
+}
+
+// Clears the dialog data sections.
+function clearDialogData() {
+    DIALOGHEADER.innerHTML = "";
+    ABOUTDATA.innerHTML = "";
+    BASESTATSDATA.innerHTML = "";
+    EVOLUTIONDATA.innerHTML = "";
+    MOVESDATA.innerHTML = "";
 }
 
 // Displays the About section in the dialog.
@@ -448,41 +576,6 @@ function displayMoves() {
     EVOLUTIONDATA.classList.add("dNone")
     MOVESDATA.classList.remove("dNone")
 }
-
-function activateDataHeader(activatedheader) {
-    if (activatedheader === "about") {
-        displayAbout();
-    } else if (activatedheader === 'base-stats' ) {
-        displayBaseStats();
-    } else if (activatedheader === "evolution") {
-        displayEvolution();
-    } else {
-        displayMoves();
-    }
-
-}
-
-/**
- * Pushes Pokémon data into the respective arrays.
- * @param {string} name - The name of the Pokémon.
- * @param {number} id - The ID of the Pokémon.
- * @param {string} type - The primary type of the Pokémon.
-
- */
-function pushPokemonData(name, id, type) {
-    pokemonData.pokemonNames.push(name);
-    pokemonData.pokemonIDs.push(id);
-    pokemonData.pokemonTypes.push(type);
-}
-
- /**
- * Pushes additional type data into the respective array.
- * @param {string} type2 - The secondary type of the Pokémon.
- */
-function pushAdditionalTypeData(type2) {
-    pokemonData.pokemonTypes2.push(type2);
-}
-
  
 // Saves Pokémon data arrays to sessionStorage.
 function saveDataToSessionStorage() {
@@ -511,37 +604,37 @@ function getDataFromSessionStorage() {
     }
 }
 
-// Removes the no-scroll class from the body to enable scrolling.
-function enableBodyScroll() {   
+// Enables body scrolling.
+function enableBodyScroll() {
     BODY.classList.remove("no-scroll");
 }
 
-// Sets the dialog header class to visible and removes any type-specific background classes.
-function resetDialogHeaderClass() {
-    DIALOGHEADER.className = "dialog-header-visible";
+// Hides the loading spinner element.
+function hideLoadingSpinner() {
+    LOADINGSPINNER.classList.add("dNone");
 }
 
-// Closes the dialog and resets its state.
-function closeDialog() {
-    DIALOG.close();
-    DIALOG.classList.remove("opened");
-    enableBodyScroll();
-    resetDialogHeaderClass();
-    clearDialogData()
-    displayAbout();
-};
+// Shows the loading spinner for more Pokémon element.
+function showLoadingSpinnerMorePokemon() {
+    LOADINGSPINNERMOREPOKEMON.classList.remove("dNone");
+}
 
-/**
- * Closes the dialog when clicking outside of its content area.
- * @param {MouseEvent} event - The mouse event object.
- */
-DIALOG.addEventListener('click', function (event) {
-    if (event.target === DIALOG) {
-        closeDialog();
-    }
-});
+// Hides the loading spinner for more Pokémon element.
+function hideLoadingSpinnerMorePokemon() {
+    LOADINGSPINNERMOREPOKEMON.classList.add("dNone");
+}
 
+// Displays the load more button element.
+function displayLoadMoreButton() {
+    LOADMOREPOKEMONBUTTON.classList.remove("dNone");
+}
 
+// Hides the load more button element.
+function hideLoadMoreButton() {
+    LOADMOREPOKEMONBUTTON.classList.add("dNone");
+}
+
+// ADDEVENTLISTENERS AND INIT FUNCTION
 /**
  * Filters and displays Pokémon based on user input in the search field.
  * Listens for input events on the search field and updates the displayed Pokémon cards accordingly.
@@ -549,40 +642,12 @@ DIALOG.addEventListener('click', function (event) {
  * @param {InputEvent} event - The input event object.
  */
 SEARCHPOKEMON.addEventListener("input", function() {
-    let indexOfCurrentlyfilteredPokemon = 0;
-    let indexOfCurrentlyfilteredPokemon2 = 0;
-    let indexOf2typePokemon = 0;
     let searchValue = SEARCHPOKEMON.value.toLowerCase();
     POKEMONLIST.innerHTML = "";
     if (searchValue.length >= 3) {
-        let filteredPokemonNames = pokemonData.pokemonNames.filter(name => name && name.includes(searchValue));
-        for (let pokemonIdIndex = 0; pokemonIdIndex < filteredPokemonNames.length; pokemonIdIndex++) {
-            indexOfCurrentlyfilteredPokemon = pokemonData.pokemonNames.findIndex(name => name == filteredPokemonNames[pokemonIdIndex]);
-            if (gen1DualTypeIds.includes(pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon])) {
-                indexOf2typePokemon = gen1DualTypeIds.findIndex(type2 => type2 == pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon]);
-                POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(filteredPokemonNames[pokemonIdIndex], pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon], pokemonData.pokemonTypes[indexOfCurrentlyfilteredPokemon], pokemonData.pokemonTypes2[indexOf2typePokemon]));
-            } else {
-                indexOfCurrentlyfilteredPokemon2 = pokemonData.pokemonNames.findIndex(name => name == filteredPokemonNames[pokemonIdIndex]);
-                POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(filteredPokemonNames[pokemonIdIndex], pokemonData.pokemonIDs[indexOfCurrentlyfilteredPokemon], pokemonData.pokemonTypes[indexOfCurrentlyfilteredPokemon2]));
-            }
-            LOADMOREPOKEMONBUTTON.classList.add("dNone");
-        }
+        filterAndDisplayPokemon(searchValue);
     } else if (searchValue.length < 3) {
-        let type2IndexShow = 0;
-        for (let currentPokemonDisplayedIndex = 0; currentPokemonDisplayedIndex < currentPokemonDisplayedIds.length; currentPokemonDisplayedIndex++) {
-            if (gen1DualTypeIds.includes(pokemonData.pokemonIDs[currentPokemonDisplayedIndex])) {
-                POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCardAdditionalType(pokemonData.pokemonNames[currentPokemonDisplayedIndex], pokemonData.pokemonIDs[currentPokemonDisplayedIndex], pokemonData.pokemonTypes[currentPokemonDisplayedIndex], pokemonData.pokemonTypes2[type2IndexShow]));
-                type2IndexShow++;
-            } else {
-                POKEMONLIST.insertAdjacentHTML("beforeend", templatePokemonCard(pokemonData.pokemonNames[currentPokemonDisplayedIndex], pokemonData.pokemonIDs[currentPokemonDisplayedIndex], pokemonData.pokemonTypes[currentPokemonDisplayedIndex]));
-            }
-        }
-        if (currentPokemonDisplayedIds.length > 30) {
-            LOADMOREPOKEMONBUTTON.classList.add("dNone");
-
-        } else {
-            LOADMOREPOKEMONBUTTON.classList.remove("dNone")
-        }
+        displayBeforeSearchPokemonCards();
     }
 });
 
@@ -600,6 +665,24 @@ DIALOG.addEventListener('keydown', function(event) {
     } else if (event.key === 'ArrowRight') {
         currentPokemonDisplayedIds[currentPokemonDisplayedIds.length - 1] === currentDialogId ? "" : moveInDialog('next');
     }
+});
+
+/**
+ * Closes the dialog when clicking outside of its content area.
+ * @param {MouseEvent} event - The mouse event object.
+ */
+DIALOG.addEventListener('click', function (event) {
+    if (event.target === DIALOG) {              
+        closeDialog();
+    }
+});
+
+// Closes the dialog when the Escape key is pressed.
+DIALOG.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeDialog();
+  }
 });
 
 // Initialize the application by calling generatePokemonCards
