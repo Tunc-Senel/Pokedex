@@ -3,6 +3,7 @@
   --bg-charcoal-blue: #06171e;
   --bg-midnight-teal: #0B2A34;
   --bg-deep-blue-teal: #0D3240;
+  --slate-gray : #6B7280;
   --warm-red: #c44f48;
   --white: #ffffff;
   --normal:   #D8D7B8;
@@ -71,6 +72,11 @@ button {
   cursor: pointer;
 }
 
+.disable-button {
+  filter: brightness(0.35) !important;
+  cursor: default !important;
+}
+
 @keyframes pokedexSpin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
@@ -100,6 +106,11 @@ button {
   clip-path: inset(0 -100vmax);
 }
 
+.full-bleed-charcoal-blue-background {
+  box-shadow: 0 0 0 100vmax var(--bg-charcoal-blue);
+  clip-path: inset(0 -100vmax);
+}
+
 /* === HEADER === */
 header {
     display: flex;
@@ -108,6 +119,10 @@ header {
     background-color: var(--bg-midnight-teal);
     justify-content: space-between;
     align-items: center;
+}
+
+.website-logo-title {
+  cursor: pointer;
 }
 
 @media (max-width: 1440px) {
@@ -135,6 +150,10 @@ main {
 }
 
 /* === DIALOG === */
+dialog:-internal-dialog-in-top-layer::backdrop {
+background-color: rgba(0, 0, 0, 0.75);
+}
+
 dialog.opened {
   padding: 0;
   border: 0;
@@ -157,7 +176,7 @@ dialog.opened {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: var(--white);
+  color: var(--slate-gray);
   background: url("./assets/img/pokeball.png") no-repeat 50% center;
   background-size: 80% auto;
   height: 228px;
@@ -185,12 +204,17 @@ dialog.opened {
   border: none;     
   border-radius: 50%;
   background: none;
-  color: var(--white);
+  color: var(--slate-gray);
   font-size: 28px;     
   cursor: pointer;
 }
 
-.close-like-btn:hover {
+.close-like-btn:focus {
+  border: solid 1.5px var(--slate-gray) !important;
+}
+
+
+.close-like-btn:hover {     
   filter: brightness(1.25);
 }
 
@@ -225,7 +249,7 @@ dialog.opened {
 }
 
 .dialog-pokemon-type {
-  border: 1.5px solid var(--white);
+  border: 1.5px solid var(--slate-gray);
   border-radius: 20px;
   padding: 8px;
   font-weight: 600;
@@ -272,6 +296,10 @@ table {
 
 table tr {
   padding-bottom: 16px;
+}
+
+table:first-of-type tr > td:first-of-type {
+  vertical-align: top;
 }
 
 table tr > td:first-of-type {
