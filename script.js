@@ -5,6 +5,7 @@ const POKEMON_LIST = document.getElementById("pokemon-list");
 const LOADING_SPINNER = document.getElementById("loading-spinner");
 const LOADING_SPINNER_MORE_POKEMON = document.getElementById("loading-spinner-more-pokemon");
 const LOAD_MORE_POKEMON_BUTTON = document.getElementById("load-more-pokemon-button");
+const SHOW_ALL_POKEMON_BUTTON = document.getElementById("show-all-pokemon-button");
 const DIALOG = document.getElementById("dialog");
 const DIALOG_CONTENT = document.getElementById("dialog-content");
 const DIALOG_HEADER = document.getElementById("dialog-header");
@@ -20,6 +21,7 @@ const EVOLUTION_DATA = document.getElementById("evolution-data");
 const MOVES_DATA = document.getElementById("moves-data");
 const DIALOG_ARROW_LEFT_BUTTON = document.getElementById("move-back-in-dialog");
 const DIALOG_ARROW_RIGHT_BUTTON =  document.getElementById("move-forward-in-dialog");
+const NO_POKEMON_FOUND = document.getElementById("no-pokemon-found");
 
 // API CONSTANT
 const BASE_URL  = "https://pokeapi.co/api/v2/"
@@ -185,8 +187,10 @@ function displayDialog(pokemonId, findEvolutionDataIndex) {
     setUpDialog();
     displayLoadMoreButton();
     DIALOG_HEADER.classList.add(`${pokemondata[pokemonId].type[0]}-bg`)
-    DIALOG_HEADER.insertAdjacentHTML("afterbegin", templateDialogHeader(pokemondata[pokemonId].name, pokemondata[pokemonId].id, pokemondata[pokemonId].type));
-    ABOUT_DATA.insertAdjacentHTML("beforeend", templateAboutData(pokemondata[pokemonId].name, pokemondata[pokemonId].height, pokemondata[pokemonId].weight, pokemondata[pokemonId].abilities));
+    DIALOG_HEADER.insertAdjacentHTML("afterbegin",
+                  templateDialogHeader(pokemondata[pokemonId].name,pokemondata[pokemonId].id, pokemondata[pokemonId].type));
+    ABOUT_DATA.insertAdjacentHTML("beforeend",
+               templateAboutData(pokemondata[pokemonId].name, pokemondata[pokemonId].height, pokemondata[pokemonId].weight, pokemondata[pokemonId].abilities));
     EVOLUTION_DATA.insertAdjacentHTML("beforeend", templateTwoEvolutionsData(stagesFlat, pokemondata[pokemonId].type));
     BASE_STATS_DATA.insertAdjacentHTML("beforeend", templateBaseStatsData(pokemondata[pokemonId].stats));
     MOVES_DATA.insertAdjacentHTML("beforeend", templateMovesData(pokemondata[pokemonId].moves));
@@ -307,7 +311,13 @@ function filterAndDisplayPokemon(searchValue) {
             )
         );
     }
+    if (filteredPokemon.length === 0) {
+        NO_POKEMON_FOUND.classList.remove("dNone");
+    } else {
+        NO_POKEMON_FOUND.classList.add("dNone");
+    }
     LOAD_MORE_POKEMON_BUTTON.classList.add("dNone");
+    SHOW_ALL_POKEMON_BUTTON.classList.remove("dNone");
 }
 
 // Displays all Pokemon cards to the state before any search was performed.
@@ -319,6 +329,7 @@ function displayBeforeSearchPokemonCards() {
         )
     }
     displayLoadMoreButton();
+    SHOW_ALL_POKEMON_BUTTON.classList.add("dNone");
 }
 
 /**
@@ -356,6 +367,11 @@ DIALOG.addEventListener('keydown', function (event) {
 
 // Reloads the page when the website logo is clicked.
 WEBSITE_LOGO.addEventListener("click", function() {
+    window.location.reload();
+});
+
+// Reloads the page when the "Show All Pokemon" button is clicked.
+SHOW_ALL_POKEMON_BUTTON.addEventListener("click", function() {
     window.location.reload();
 });
 

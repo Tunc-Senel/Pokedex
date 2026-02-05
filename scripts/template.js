@@ -14,7 +14,8 @@ function templatePokemonCard(name, id, types) {
                      <h2 aria-label="Pokémon name">${name[0].toUpperCase() + name.replace("-f", "♀").replace("-m", "♂").slice(1)}</h2>
                      <span class="numbers" aria-label="Pokémon number">#${id}</span>
                   </div>
-                  <img onclick="openDialog(${id - 1})" onkeydown="event.key === 'Enter' && openDialog(${id}) || event.key === ' ' && openDialog(${id})" class="pokemon-card-img ${types[0]}-bg" src="https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/${name}.png" alt="${name}" tabindex="0">
+                  <img onclick="openDialog(${id - 1})" onkeydown="event.key === 'Enter' && openDialog(${id}) || event.key === ' ' && openDialog(${id})" 
+                  class="pokemon-card-img ${types[0]}-bg" src="https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/${name}.png" alt="${name}" tabindex="0">
                   <div class="pokemon-card-footer">
                      ${types.map((type, index) => {
                         const className =
@@ -160,7 +161,6 @@ function templateMovesData(moves) {
                               </td>
                             </tr>
                            `
-      
    }
    return templateCollector
 }
