@@ -34,7 +34,6 @@ html, body {
   display: flex;
   flex-direction: column;
   font-family:  var(--primary-font);
-  min-width: 1440px;
   max-width: 1440px;
   margin: 0 auto;
   height: 100%;
@@ -176,7 +175,7 @@ dialog.opened {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: var(--slate-gray);
+  color: var(--bg-deep-blue-teal);
   background: url("./assets/img/pokeball.png") no-repeat 50% center;
   background-size: 80% auto;
   height: 228px;
@@ -204,13 +203,13 @@ dialog.opened {
   border: none;     
   border-radius: 50%;
   background: none;
-  color: var(--slate-gray);
+  color: var(--bg-deep-blue-teal);
   font-size: 28px;     
   cursor: pointer;
 }
 
 .close-like-btn:focus {
-  border: solid 1.5px var(--slate-gray) !important;
+  border: solid 1.5px var(--bg-deep-blue-teal) !important;
 }
 
 
@@ -249,7 +248,7 @@ dialog.opened {
 }
 
 .dialog-pokemon-type {
-  border: 1.5px solid var(--slate-gray);
+  border: 1.5px solid var(--bg-deep-blue-teal);
   border-radius: 20px;
   padding: 8px;
   font-weight: 600;
